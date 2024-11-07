@@ -17,10 +17,12 @@ class Dueno extends Model
         'id_mascota'
     ];
 
+    // Dueno.php
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'id_usuario');
+        return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
     }
+
 
     public function mascota()
     {

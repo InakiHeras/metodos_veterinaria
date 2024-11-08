@@ -15,7 +15,7 @@ class Mascota extends Model
     protected $primaryKey = 'id_mascota';
 
     protected $fillable = [
-        'id_dueño',
+        'id_cliente',
         'nombre',
         'especie',
         'raza',
@@ -28,7 +28,7 @@ class Mascota extends Model
     // Relación con Usuario (Muchos a Uno)
     public function dueño(): BelongsTo
     {
-        return $this->belongsTo(Usuario::class, 'id_dueño');
+        return $this->belongsTo(Usuario::class, 'id_cliente');
     }
 
     // Relación con Cita (Uno a Muchos)

@@ -12,13 +12,12 @@ class Cita extends Model
     use HasFactory;
 
     protected $table = 'cita';
-    protected $primaryKey = 'id_consulta';
+    protected $primaryKey = 'id_cita';
 
     protected $fillable = [
-        'id_cliente',
+
         'id_mascota',
         'id_veterinario',
-        'diagnostico',
         'fecha',
         'hora',
         'motivo',

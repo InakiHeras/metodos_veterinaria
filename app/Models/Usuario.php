@@ -31,7 +31,7 @@ class Usuario extends Authenticatable
     // Relación con Mascota (Uno a Muchos)
     public function mascotas(): HasMany
     {
-        return $this->hasMany(Mascota::class, 'id_dueño');
+        return $this->hasMany(Mascota::class, 'id_cliente');
     }
 
     // Relación con Cita (Uno a Muchos, como veterinario o enfermero)

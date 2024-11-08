@@ -11,6 +11,10 @@ Route::get('/citas', [InicioController::class, 'getCitasPorFecha']);
 
 
 
+Route::get('/test', function () {
+    return Inertia::render('Test');
+});
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),

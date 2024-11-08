@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Mascota extends Model
 {
@@ -13,23 +15,25 @@ class Mascota extends Model
     protected $primaryKey = 'id_mascota';
 
     protected $fillable = [
+        'id_dueño',
         'nombre',
         'especie',
         'raza',
         'fecha_nacimiento',
-        'sexo',
         'peso',
         'alergias',
-        'castrado'
+        'castrado',
     ];
 
-    public function duenos()
+    // Relación con Usuario (Muchos a Uno)
+    public function dueño(): BelongsTo
     {
-        return $this->hasMany(Dueno::class, 'id_mascota');
+        return $this->belongsTo(Usuario::class, 'id_dueño');
     }
 
-    public function historialMedico()
+    // Relación con Cita (Uno a Muchos)
+    public function citas(): HasMany
     {
-        return $this->hasMany(HistorialMedico::class, 'id_mascota');
+        return $this->hasMany(Cita::class, 'id_mascota');
     }
 }

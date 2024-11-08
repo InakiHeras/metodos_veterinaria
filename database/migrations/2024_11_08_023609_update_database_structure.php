@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::dropIfExists('dueno');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+
         // Modificar la tabla 'usuarios'
         Schema::table('usuarios', function (Blueprint $table) {
             $table->string('password')->after('correo');

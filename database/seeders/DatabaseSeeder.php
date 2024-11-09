@@ -22,12 +22,12 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Admin',
             'apellidos' => 'User',
             'telefono' => '1234567890',
-            'correo' => 'admin@example.com',
+            'email' => 'admin@example.com',
             'password' => Hash::make('1234'),
             'tipo_usuario' => 'admin'
         ]);
 
-        $role = Role::create(['name' => 'admin']);
+       // $role = Role::create(['name' => 'admin']);
 
         $user->assignRole('admin');
     }

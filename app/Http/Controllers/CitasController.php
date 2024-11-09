@@ -1,15 +1,11 @@
-// app/Http/Controllers/CitaController.php
+<?php
 
 namespace App\Http\Controllers;
 
-use App\Models\Cita;
-use Inertia\Inertia;
+use Illuminate\Http\Request;
 
-class CitaController extends Controller
+class CitasController extends Controller
 {
-    public function index()
-    {
-        $citas = Cita::all(); // Obtén todas las citas de la base de datos
-        return Inertia::render('Citas', ['citas' => $citas]);
-    }
+    //
 }
+

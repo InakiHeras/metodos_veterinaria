@@ -5,6 +5,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+Route::get('/base', function () {
+    return Inertia::render('Base');
+});
+
+
 Route::get('/test', function () {
     return Inertia::render('Test');
 });
@@ -12,6 +17,8 @@ Route::get('/test', function () {
 Route::get('/citas', function () {
     return Inertia::render('Citas');
 });
+
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

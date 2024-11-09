@@ -15,7 +15,7 @@ export default function Citas() {
     return (
         <Base>
             <div className="citas-page">
-                <main className="table-container">
+                <main className="citas-table-container">
                     <table className="citas-table">
                         <thead>
                             <tr>

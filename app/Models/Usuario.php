@@ -2,53 +2,42 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Usuario extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory;
 
     protected $table = 'usuarios';
     protected $primaryKey = 'id_usuario';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'nombre',
         'apellidos',
-        'password',
         'telefono',
-        'email'
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
+        'correo',
         'password',
-        'remember_token',
+        'tipo_usuario',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Relación con DatosUsuarioTipo (Uno a Uno o Uno a Muchos)
+    public function datosUsuarioTipo(): HasMany
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(DatosUsuarioTipo::class, 'id_usuario');
+    }
+
+    // Relación con Mascota (Uno a Muchos)
+    public function mascotas(): HasMany
+    {
+        return $this->hasMany(Mascota::class, 'id_cliente');
+    }
+
+    // Relación con Cita (Uno a Muchos, como veterinario o enfermero)
+    public function citas(): HasMany
+    {
+        return $this->hasMany(Cita::class, 'id_veterinario');
     }
 }
+

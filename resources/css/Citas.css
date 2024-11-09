@@ -1,0 +1,368 @@
+/* Estructura general */
+.citas-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('/assets/fondo_cita.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 50px; /* Para que el contenido esté debajo de la barra fija */
+}
+
+/* Barra de navegación */
+.navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background-color: transparent;
+    box-shadow: none;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    width: 120px;
+}
+
+.nav-links ul {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links .nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.nav-links .active {
+    color: #ffffff;
+    background-color: #e889b6;
+    padding: 5px 10px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.user-icon {
+    font-size: 24px;
+    color: #333;
+}
+
+/* Tabla centrada y más ancha */
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.citas-table {
+    width: 90%;
+    max-width: 900px;
+    border-collapse: collapse;
+    margin: 15px 0;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.citas-table th, .citas-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.citas-table th:not(:last-child),
+.citas-table td:not(:last-child) {
+    border-right: 1px solid #ddd;
+}
+
+/* Ajuste del ancho de las columnas */
+.citas-table th:nth-child(1),
+.citas-table td:nth-child(1) {
+    width: 10%; /* Ancho de la columna ID */
+}
+
+.citas-table th:nth-child(2),
+.citas-table td:nth-child(2) {
+    width: 20%; /* Ancho de la columna Fecha */
+}
+
+.citas-table th:nth-child(3),
+.citas-table td:nth-child(3) {
+    width: 15%; /* Ancho de la columna Hora */
+}
+
+.citas-table th:nth-child(4),
+.citas-table td:nth-child(4) {
+    width: 25%; /* Ancho de la columna Motivo */
+}
+
+.citas-table th:nth-child(5),
+.citas-table td:nth-child(5) {
+    width: 15%; /* Ancho de la columna de Reagendar/Cancelar */
+}
+
+.citas-table thead th {
+    background-color: #e889b6;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.citas-table tbody tr:hover {
+    background-color: #f3d2e3;
+}
+
+
+/* Tamaño de los iconos y separación entre ellos */
+.action-btn {
+    background: none;
+    border: none;
+    font-size: 25px; /* Aumenta el tamaño del icono */
+    cursor: pointer;
+    margin: 0 10px; /* Aumenta el espacio entre los iconos */
+}
+
+.reagendar-btn {
+    color: #e889b6 !important; /* Color rosa para el icono de reagendar */
+}
+
+.cancelar-btn {
+    color: #d9534f !important; /* Color rojo para el icono de cancelar */
+}
+
+.agendar-cita-btn {
+    background-color: #e889b6;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.agendar-cita-btn:hover {
+    background-color: #d06ca3;
+}
+
+/* Estructura del modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #ffebf9; /* Fondo rosado */
+    padding: 20px;
+    border-radius: 40px; /* Borde redondeado */
+    border: 2px solid #FB67C0; /* Borde de color rosa fuerte */
+    width: 700px;
+    max-width: 90%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.modal-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #e889b6;
+    margin-bottom: 15px;
+}
+
+/* Estructura de filas */
+.modal-form .form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.single-column {
+    justify-content: center;
+    font-weight: bold;
+    color: #e889b6;
+    text-align: center;
+    grid-column: span 4; /* Abarca toda la fila en columnas */
+    margin-bottom: 10px;
+}
+
+/* Estilos de filas con múltiples columnas */
+.four-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.three-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Botones en el formulario */
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+    background-color: #e889b6;
+    color: #fff;
+    padding: 8px 25px;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel-btn {
+    background-color: #d9534f;
+}
+
+.save-btn:hover {
+    background-color: #d06ca3;
+}
+
+.cancel-btn:hover {
+    background-color: #c5463c;
+}
+
+/* Estilo general de inputs con más ancho */
+.modal-content input[type="text"],
+.modal-content input[type="date"],
+.modal-content input[type="time"],
+.modal-content input[type="email"] {
+    width: 100%; /* Ancho general para inputs */
+    max-width: 240px; /* Ancho máximo opcional */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f2cbe3;
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: inherit;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Ajuste específico para inputs de email y teléfono */
+.modal-content input[type="tel"] {
+    width: 100%; /* Ajusta el ancho según tus necesidades */
+    max-width: 230px; /* Ancho máximo opcional */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #f2cbe3;
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: inherit;
+    font-size: 14px;
+    color: #333;
+}
+
+
+/* Centrar texto en los inputs de fecha y hora */
+.modal-content input[type="date"],
+.modal-content input[type="time"] {
+    text-align: center;
+}
+
+/* Ajustar ancho de los inputs de Mascota y Motivo */
+.modal-content input[name="mascota"]{
+    width: 100%; /* Ajusta el ancho según tus necesidades */
+    max-width: 150px; /* Ancho máximo opcional */
+}
+
+.modal-content input[name="motivo"] {
+    width: 100%; /* Ajusta el ancho según lo necesites */
+    max-width: 300px; /* Ancho máximo opcional */
+}
+
+
+/* Espacio extra entre el label y el input */
+.modal-content label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Estilos adicionales para inputs en filas de columnas */
+.four-columns input,
+.two-columns input,
+.three-columns input {
+    width: calc(100% - 16px); /* Ajuste para el padding y gap */
+}
+
+
+
+.full-width {
+    grid-column: 1 / -1; /* Abarca todo el ancho de la fila en el grid */
+    background-color: #FFD2EE; /* Color de fondo para el encabezado */
+    text-align: center;
+    font-weight: bold;
+    color: #FB67C0; /* Color de texto */
+    border-radius: 15px;
+}
+
+fieldset {
+    border: none; /* Elimina el borde del fieldset */
+    padding: 0; /* Elimina el padding adicional */
+    margin: 0; /* Elimina el margen adicional */
+}
+
+legend {
+    font-size: 18px;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 0;
+    background-color: #e889b6;
+    display: block;
+    width: 100%; /* Asegura que el legend ocupe todo el ancho del fieldset */
+    border-radius: 10px;
+    margin: 0; /* Elimina el margen alrededor del legend */
+}
+
+.modal-form .form-row label {
+    display: flex;
+    justify-content: flex-end; /* Alinea el texto a la derecha */
+    text-align: right; /* Asegura que el texto esté alineado a la derecha */
+    font-weight: bold;
+    color: #333;
+    margin-right: 10px; /* Espacio entre el label y el input */
+    width: 100px; /* Ajusta el ancho según sea necesario */
+    padding-right: 0; /* Asegura que no haya padding en el lado derecho */
+    text-align: right; /* Alinea el texto del label a la derecha */
+}
+
+

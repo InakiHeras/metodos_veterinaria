@@ -24,6 +24,7 @@ html, body {
     position: relative;
     z-index: 1;
     overflow: hidden; /* Asegura que el contenido no se desborde */
+    padding-top: 50px; /* Espacio debajo de la barra fija */
 }
 
 /* Cabecera */
@@ -75,11 +76,22 @@ html, body {
 }
 
 /* Tabla de citaa */
+
+/* Contenedor de la tabla con scroll */
+.table-container {
+    max-height: 200px; /* Altura máxima del contenedor de la tabla */
+    overflow-y: auto; /* Activa el scroll vertical si hay más filas */
+    width: 100%;
+    margin: 0 auto;
+    background-color: #ffffff;
+}
+
+/* Tabla */
 .table {
-    width: 100%; /* Puedes definir un tamaño específico aquí, como 500px */
-    height: 200px; /* Altura definida para la tabla */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
     border-collapse: collapse;
     text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table th, .table td {

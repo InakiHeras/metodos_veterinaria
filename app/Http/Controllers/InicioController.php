@@ -25,10 +25,13 @@ class InicioController extends Controller
     public function getCitasPorFecha(Request $request)
     {
         $fecha = Carbon::parse($request->query('fecha'), 'America/Mexico_City')->format('Y-m-d');
+        \Log::info('Fecha recibida en el backend: ' . $fecha);
+    
         $citas = Cita::with('mascota.dueño')
                     ->whereDate('fecha', $fecha)
                     ->get();
-
+    
         return response()->json($citas);
     }
+    
 }

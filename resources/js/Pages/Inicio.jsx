@@ -5,9 +5,17 @@ import axios from 'axios';
 const Inicio = ({ citas: initialCitas }) => {
     const [time, setTime] = useState('');
     const [ampm, setAmpm] = useState('');
-    const [fecha, setFecha] = useState(new Date().toISOString().slice(0, 10)); // Fecha actual en formato YYYY-MM-DD
+    
+    // Usar la fecha local correctamente ajustada a la zona horaria local
+    const getLocalDate = () => {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        return now.toISOString().slice(0, 10);
+    };
+
+    const [fecha, setFecha] = useState(getLocalDate());
     const [citas, setCitas] = useState(initialCitas);
-    const [completedCitas, setCompletedCitas] = useState({}); // Estado para manejar citas completadas
+    const [completedCitas, setCompletedCitas] = useState({});
 
     // Cargar el mensaje inicial desde localStorage o usar un mensaje predeterminado
     const [eventText, setEventText] = useState(
@@ -86,84 +94,81 @@ const Inicio = ({ citas: initialCitas }) => {
     };
 
     return (
-            <div className="container">
-                <div className="header">Bienvenid@ Rosita ≽^• ˕ • ྀི≼</div>
+        <div className="container">
+            <div className="header">Bienvenid@ Rosita ≽^• ˕ • ྀི≼</div>
 
-                <div className="content">
-                    <div className="left-section">
-                        <div className="subheader">Citas de hoy</div>
+            <div className="content">
+                <div className="left-section">
+                    <div className="subheader">Citas de hoy</div>
 
-                        <div className="date-filter">
-                            <label>Fecha:</label>
-                            <input
-                                type="date"
-                                value={fecha}
-                                onChange={handleDateChange}
-                            />
-                        </div>
-
-                        
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th> </th>
-                                        <th>Hora</th>
-                                        <th>Cliente</th>
-                                        <th>Razón</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {citas.map((cita) => (
-                                        <tr key={cita.id_consulta} className={completedCitas[cita.id_consulta] ? "completed" : ""}>
-                                            <td>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={!!completedCitas[cita.id_consulta]}
-                                                    onChange={() => handleCheckboxChange(cita.id_consulta)}
-                                                />
-                                            </td>
-                                            <td>{cita.hora}</td>
-                                            <td>
-                                                {cita.cliente && cita.cliente.usuario 
-                                                    ? `${cita.cliente.usuario.nombre} ${cita.cliente.usuario.apellidos}`
-                                                    : 'Cliente no disponible'}
-                                            </td>
-                                            <td>{cita.motivo}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        
+                    <div className="date-filter">
+                        <label>Fecha:</label>
+                        <input
+                            type="date"
+                            value={fecha}
+                            onChange={handleDateChange}
+                        />
                     </div>
 
-                    <div className="right-section">
-                        <div className="time-container">
-                            <div className="time-inner">
-                                <span className="time-text">{time}</span>
-                                <span className="ampm-text">{ampm}</span>
-                            </div>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th> </th>
+                                <th>Hora</th>
+                                <th>Cliente</th>
+                                <th>Razón</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {citas.map((cita) => (
+                                <tr key={cita.id_cita} className={completedCitas[cita.id_cita] ? "completed" : ""}>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            checked={!!completedCitas[cita.id_cita]}
+                                            onChange={() => handleCheckboxChange(cita.id_cita)}
+                                        />
+                                    </td>
+                                    <td>{cita.hora}</td>
+                                    <td>
+                                        {cita.mascota && cita.mascota.dueño 
+                                            ? `${cita.mascota.dueño.nombre} ${cita.mascota.dueño.apellidos}`
+                                            : 'Cliente no disponible'}
+                                    </td>
+                                    <td>{cita.motivo}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="right-section">
+                    <div className="time-container">
+                        <div className="time-inner">
+                            <span className="time-text">{time}</span>
+                            <span className="ampm-text">{ampm}</span>
                         </div>
-                        <div className="events">
-                            <h3>Próximos eventos</h3>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    value={eventText}
-                                    onChange={handleEventTextChange}
-                                    onBlur={handleBlur}
-                                    onKeyDown={handleKeyDown}
-                                    maxLength={100} // Limitar a 10 caracteres
-                                    autoFocus
-                                />
-                            ) : (
-                                <p>{eventText}</p>
-                            )}
-                            <button className="edit-button" onClick={handleEditClick}>Editar</button>
-                        </div>
+                    </div>
+                    <div className="events">
+                        <h3>Próximos eventos</h3>
+                        {isEditing ? (
+                            <input
+                                type="text"
+                                value={eventText}
+                                onChange={handleEventTextChange}
+                                onBlur={handleBlur}
+                                onKeyDown={handleKeyDown}
+                                maxLength={100}
+                                autoFocus
+                            />
+                        ) : (
+                            <p>{eventText}</p>
+                        )}
+                        <button className="edit-button" onClick={handleEditClick}>Editar</button>
                     </div>
                 </div>
             </div>
-        
+        </div>
     );
 };
 

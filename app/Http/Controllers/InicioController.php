@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cita;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class InicioController extends Controller
 {
     public function index()
     {
-        $hoy = now()->format('Y-m-d');
-        $citas = Cita::with('cliente.usuario')
+        // Establece la fecha de hoy en la zona horaria deseada
+        $hoy = Carbon::now('America/Mexico_City')->format('Y-m-d');
+        $citas = Cita::with('mascota.dueño')
                     ->whereDate('fecha', $hoy)
                     ->get();
-
+    
         return Inertia::render('Inicio', [
             'citas' => $citas,
         ]);
@@ -22,8 +24,8 @@ class InicioController extends Controller
 
     public function getCitasPorFecha(Request $request)
     {
-        $fecha = $request->query('fecha');
-        $citas = Cita::with('cliente.usuario')
+        $fecha = Carbon::parse($request->query('fecha'), 'America/Mexico_City')->format('Y-m-d');
+        $citas = Cita::with('mascota.dueño')
                     ->whereDate('fecha', $fecha)
                     ->get();
 

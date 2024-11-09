@@ -11,11 +11,15 @@ html, body {
     height: 100%;
     background-color: #fef7ff;
     font-family: "Lexend Deca", sans-serif;
+    background-image: url('/assets/fondo_inicio.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
 }
 
-
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
@@ -73,7 +77,6 @@ html, body {
 /* Tabla de citaa */
 .table {
     width: 100%; /* Puedes definir un tamaño específico aquí, como 500px */
-    max-width: 600px; /* Ajusta el ancho máximo según tu diseño */
     height: 200px; /* Altura definida para la tabla */
     border-collapse: collapse;
     text-align: center;
@@ -88,14 +91,6 @@ html, body {
     background-color: #ffcdcd;
     color: #000000;
 }
-
-/* Cambiar el tamaño y color del checkbox */
-.table input[type="checkbox"] {
-    width: 20px; /* Ajusta el tamaño del checkbox */
-    height: 20px;
-    accent-color: #ffcdcd; /* Cambia el color del checkbox (funciona en algunos navegadores) */
-}
-
 
 .completed td {
     text-decoration: line-through; /* Tachar el texto */
@@ -155,7 +150,6 @@ html, body {
     margin-top: 35px;
     background-color: #f9d2e8;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     height: 200px;
     display: flex;
     flex-direction: column;

@@ -13,36 +13,55 @@
     background-repeat: no-repeat;
     padding-top: 50px; /* Espacio debajo de la barra fija */
 }
-
-/* Tabla centrada y más ancha */
+/* Contenedor de la tabla con scroll */
 .table-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-}
-
-.citas-table {
     width: 90%;
     max-width: 900px;
-    border-collapse: collapse;
+    max-height: 300px; /* Altura máxima de la tabla */
+    overflow-y: auto; /* Scroll vertical cuando exceda el alto */
     margin: 15px 0;
+}
+
+/* Estructura de la tabla */
+.citas-table {
+    width: 100%;
+    border-collapse: collapse;
     background-color: #ffffff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    overflow: hidden;
 }
 
+/* Estilos de celdas */
 .citas-table th, .citas-table td {
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
+/* Separador de columnas */
 .citas-table th:not(:last-child),
 .citas-table td:not(:last-child) {
     border-right: 1px solid #ddd;
 }
+
+/* Estilos del encabezado */
+.citas-table thead th {
+    background-color: #ECB7D8;
+    color: #ffffff;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Hover en las filas del cuerpo */
+.citas-table tbody tr:hover {
+    background-color: #f3d2e3;
+}
+
 
 /* Ajuste del ancho de las columnas */
 .citas-table th:nth-child(1),
@@ -71,7 +90,7 @@
 }
 
 .citas-table thead th {
-    background-color: #e889b6;
+    background-color: #ECB7D8;
     color: #ffffff;
     font-weight: bold;
 }

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import Base from './Base'; // Asegúrate de importar el componente Base
+import { usePage } from '@inertiajs/react';
+import Base from './Base';
 import '../../css/Citas.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons';
 
 export default function Citas() {
+    const { citas } = usePage().props;
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
@@ -25,38 +27,28 @@ export default function Citas() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>0104SA</td>
-                                <td>28/octubre/2024</td>
-                                <td>2:00 pm</td>
-                                <td>Vacuna</td>
-                                <td>
-                                    <button className="action-btn reagendar-btn">
-                                        <FontAwesomeIcon icon={faSyncAlt} />
-                                    </button>
-                                    <button className="action-btn cancelar-btn">
-                                        <FontAwesomeIcon icon={faBan} />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>0105RE</td>
-                                <td>05/noviembre/2024</td>
-                                <td>5:00 pm</td>
-                                <td>Castración</td>
-                                <td>
-                                    <button className="action-btn reagendar-btn">
-                                        <FontAwesomeIcon icon={faSyncAlt} />
-                                    </button>
-                                    <button className="action-btn cancelar-btn">
-                                        <FontAwesomeIcon icon={faBan} />
-                                    </button>
-                                </td>
-                            </tr>
+                            {citas.map((cita) => (
+                                <tr key={cita.id_cita}>
+                                    <td>{cita.id_cita}</td>
+                                    <td>{cita.fecha}</td>
+                                    <td>{cita.hora}</td>
+                                    <td>{cita.motivo}</td>
+                                    <td>
+                                        <button className="action-btn reagendar-btn">
+                                            <FontAwesomeIcon icon={faSyncAlt} />
+                                        </button>
+                                        <button className="action-btn cancelar-btn">
+                                            <FontAwesomeIcon icon={faBan} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
-                    <button className="agendar-cita-btn" onClick={openModal}>Agendar cita</button>
                 </main>
+
+                {/* Botón fuera de la tabla */}
+                <button className="agendar-cita-btn" onClick={openModal}>Agendar cita</button>
 
                 {isModalOpen && (
                     <div className="modal-overlay citas-modal">

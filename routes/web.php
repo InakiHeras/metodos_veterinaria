@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Http\Controllers\CitasController;
+
 Route::get('/base', function () {
     return Inertia::render('Base');
 });
@@ -14,10 +16,8 @@ Route::get('/test', function () {
     return Inertia::render('Test');
 });
 
-Route::get('/citas', function () {
-    return Inertia::render('Citas');
-});
 
+Route::get('/citas', [CitasController::class, 'index']);
 
 
 Route::get('/', function () {

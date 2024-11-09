@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -38,11 +39,11 @@ return new class extends Migration
         Schema::table('cita', function (Blueprint $table) {
             $table->dropForeign('cita_ibfk_4');
             $table->dropColumn('id_enfermero');
+            $table->dropForeign('fk_id_diagnostico');
+            $table->dropColumn('id_diagnostico');
             $table->dropForeign('cita_ibfk_3');
-            $table->dropColumn('id_veterinario');
             $table->dropForeign('cita_ibfk_1');
             $table->dropColumn('id_cliente');
-            $table->integer('id_veterinario');
             $table->foreign('id_veterinario')->references('id_usuario')->on('usuarios')->onDelete('cascade');
             $table->dropColumn('peso');
             $table->dropColumn('temperatura');
@@ -54,7 +55,8 @@ return new class extends Migration
         Schema::table('diagnostico', function (Blueprint $table) {
             $table->dropForeign('diagnostico_ibfk_1');
             $table->dropColumn('id_tratamiento');
-            $table->integer('id_cita');
+            $table->dropColumn('id_cita');
+            $table->integer('id_cita')->nullable();
             $table->foreign('id_cita')->references('id_consulta')->on('cita')->onDelete('cascade');
         });
 
@@ -69,6 +71,11 @@ return new class extends Migration
         Schema::table('historialMedico', function (Blueprint $table) {
             $table->dropForeign('historialMedico_ibfk_1');
             $table->dropColumn('id_mascota');
+        });
+
+        Schema::table('mascota', function (Blueprint $table) {
+            $table->dropForeign('mascota_ibfk_1');
+            $table->foreign('id_cliente')->references('id_usuario')->on('usuarios')->onDelete('cascade');
         });
 
         Schema::create('recetas', function (Blueprint $table) {

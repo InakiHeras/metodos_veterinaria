@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import Base from './Base'; // Importa el componente Base para envolver el contenido
 import '../../css/inicio.css';
 import axios from 'axios';
 
 const Inicio = ({ citas: initialCitas }) => {
     const [time, setTime] = useState('');
     const [ampm, setAmpm] = useState('');
-    const [fecha, setFecha] = useState(new Date().toISOString().slice(0, 10)); // Fecha actual en formato YYYY-MM-DD
+    
+    // Usar la fecha local correctamente ajustada a la zona horaria local
+    const getLocalDate = () => {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        return now.toISOString().slice(0, 10);
+    };
+
+    const [fecha, setFecha] = useState(getLocalDate());
     const [citas, setCitas] = useState(initialCitas);
-    const [completedCitas, setCompletedCitas] = useState({}); // Estado para manejar citas completadas
+    const [completedCitas, setCompletedCitas] = useState({});
 
     // Cargar el mensaje inicial desde localStorage o usar un mensaje predeterminado
     const [eventText, setEventText] = useState(
@@ -36,21 +45,36 @@ const Inicio = ({ citas: initialCitas }) => {
     // Cambia la fecha y obtiene las citas de esa fecha
     const handleDateChange = async (e) => {
         const selectedDate = e.target.value;
-        setFecha(selectedDate);
-
+        setFecha(selectedDate); // Actualiza el estado de la fecha inmediatamente
+    
         try {
-            const response = await axios.get(`/citas?fecha=${selectedDate}`);
+            const response = await axios.get(`/citas_fecha?fecha=${selectedDate}`);
             setCitas(response.data); // Actualiza las citas con las de la fecha seleccionada
         } catch (error) {
             console.error('Error al obtener citas:', error);
         }
     };
 
+    useEffect(() => {
+        const fetchCitas = async () => {
+            try {
+                const response = await axios.get(`/citas_fecha?fecha=${fecha}`);
+                setCitas(response.data);
+            } catch (error) {
+                console.error('Error al obtener citas:', error);
+            }
+        };
+        fetchCitas();
+    }, [fecha]); // Ejecuta este efecto cada vez que `fecha` cambia
+    
+
     // Recupera el estado de los checkboxes al montar el componente
     useEffect(() => {
         const savedCompletedCitas = JSON.parse(localStorage.getItem('completedCitas')) || {};
         setCompletedCitas(savedCompletedCitas);
     }, []);
+
+    
 
     // Maneja el cambio de estado del checkbox y lo guarda en localStorage
     const handleCheckboxChange = (id) => {
@@ -86,9 +110,9 @@ const Inicio = ({ citas: initialCitas }) => {
     };
 
     return (
+        <Base>
             <div className="container">
                 <div className="header">Bienvenid@ Rosita ≽^• ˕ • ྀི≼</div>
-
                 <div className="content">
                     <div className="left-section">
                         <div className="subheader">Citas de hoy</div>
@@ -102,7 +126,8 @@ const Inicio = ({ citas: initialCitas }) => {
                             />
                         </div>
 
-                        
+                        <div className="table-container" key={fecha}>
+
                             <table className="table">
                                 <thead>
                                     <tr>
@@ -114,18 +139,18 @@ const Inicio = ({ citas: initialCitas }) => {
                                 </thead>
                                 <tbody>
                                     {citas.map((cita) => (
-                                        <tr key={cita.id_consulta} className={completedCitas[cita.id_consulta] ? "completed" : ""}>
+                                        <tr key={cita.id_cita} className={completedCitas[cita.id_cita] ? "completed" : ""}>
                                             <td>
                                                 <input
                                                     type="checkbox"
-                                                    checked={!!completedCitas[cita.id_consulta]}
-                                                    onChange={() => handleCheckboxChange(cita.id_consulta)}
+                                                    checked={!!completedCitas[cita.id_cita]}
+                                                    onChange={() => handleCheckboxChange(cita.id_cita)}
                                                 />
                                             </td>
                                             <td>{cita.hora}</td>
                                             <td>
-                                                {cita.cliente && cita.cliente.usuario 
-                                                    ? `${cita.cliente.usuario.nombre} ${cita.cliente.usuario.apellidos}`
+                                                {cita.mascota && cita.mascota.dueño 
+                                                    ? `${cita.mascota.dueño.nombre} ${cita.mascota.dueño.apellidos}`
                                                     : 'Cliente no disponible'}
                                             </td>
                                             <td>{cita.motivo}</td>
@@ -133,7 +158,8 @@ const Inicio = ({ citas: initialCitas }) => {
                                     ))}
                                 </tbody>
                             </table>
-                        
+                        </div>
+
                     </div>
 
                     <div className="right-section">
@@ -152,7 +178,7 @@ const Inicio = ({ citas: initialCitas }) => {
                                     onChange={handleEventTextChange}
                                     onBlur={handleBlur}
                                     onKeyDown={handleKeyDown}
-                                    maxLength={100} // Limitar a 10 caracteres
+                                    maxLength={100}
                                     autoFocus
                                 />
                             ) : (
@@ -163,7 +189,7 @@ const Inicio = ({ citas: initialCitas }) => {
                     </div>
                 </div>
             </div>
-        
+        </Base>
     );
 };
 

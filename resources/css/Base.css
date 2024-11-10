@@ -1,0 +1,78 @@
+/* Base.css */
+.navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background-color: transparent;
+    box-shadow: none;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+
+.nav-links {
+    margin-left: auto; /* Empuja las opciones del menú hacia la derecha */
+    padding-right: 80px; /* Ajusta este valor para más espacio */
+}
+
+.logo {
+    width: 120px;
+}
+
+.nav-links ul {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links .nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.nav-links .active {
+    color: #ffffff;
+    background-color: #e889b6;
+    padding: 5px 10px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.user-icon {
+    font-size: 24px;
+    color: #333;
+}
+
+/* Efecto hover para las opciones del menú */
+.nav-links .nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    transition: background-color 0.3s;
+}
+
+/* Color rosa al hacer hover */
+.nav-links .nav-link:hover {
+    background-color: #e889b6;
+    color: #ffffff;
+}
+
+/* Estilo para la opción activa */
+.nav-links .active {
+    background-color: #e889b6;
+    color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+/* Mantiene el hover en la opción activa */
+.nav-links .nav-link.active:hover {
+    background-color: #e889b6;
+    color: #ffffff;
+}

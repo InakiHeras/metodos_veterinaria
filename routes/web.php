@@ -7,9 +7,17 @@ use Inertia\Inertia;
 use App\Http\Controllers\InicioController;
 
 Route::get('/inicio', [InicioController::class, 'index']);
-Route::get('/citas', [InicioController::class, 'getCitasPorFecha']);
+Route::get('/citas_fecha', [InicioController::class, 'getCitasPorFecha']);
 
 
+Route::get('/base', function () {
+    return Inertia::render('Base');
+});
+
+
+Route::get('/citas', function () {
+    return Inertia::render('Citas');
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -23,8 +31,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

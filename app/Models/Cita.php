@@ -23,12 +23,6 @@ class Cita extends Model
         'motivo',
     ];
 
-    // Relación con Usuario (Muchos a Uno)
-    public function cliente(): BelongsTo
-    {
-        return $this->belongsTo(Usuario::class, 'id_cliente');
-    }
-
     public function veterinario(): BelongsTo
     {
         return $this->belongsTo(Usuario::class, 'id_veterinario');

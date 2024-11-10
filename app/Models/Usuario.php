@@ -5,19 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Permission\Traits\HasRoles;
 
 class Usuario extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
 
     protected $table = 'usuarios';
     protected $primaryKey = 'id_usuario';
+
+    public $timestamps = false;
 
     protected $fillable = [
         'nombre',
         'apellidos',
         'telefono',
-        'correo',
+        'email',
         'password',
         'tipo_usuario',
     ];
@@ -39,5 +42,16 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(Cita::class, 'id_veterinario');
     }
-}
 
+    protected $hidden = [
+        'password',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+}

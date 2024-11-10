@@ -19,7 +19,6 @@ export default function Citas() {
                     <table className="citas-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Fecha</th>
                                 <th>Hora</th>
                                 <th>Motivo</th>
@@ -29,7 +28,6 @@ export default function Citas() {
                         <tbody>
                             {citas.map((cita) => (
                                 <tr key={cita.id_cita}>
-                                    <td>{cita.id_cita}</td>
                                     <td>{cita.fecha}</td>
                                     <td>{cita.hora}</td>
                                     <td>{cita.motivo}</td>
@@ -80,8 +78,10 @@ export default function Citas() {
                                     <input type="text" name="motivo" />
                                 </div>
                                 <div className="form-row three-columns">
-                                    <label>Tipo/raza:</label>
-                                    <input type="text" />
+                                    <label>Especie:</label>
+                                    <input type="text" name="especie" />
+                                    <label>Raza:</label>
+                                    <input type="text" name="raza" />
                                     <label>Fecha:</label>
                                     <input type="date" />
                                     <label>Hora:</label>

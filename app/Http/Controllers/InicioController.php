@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cita;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class InicioController extends Controller
 {
@@ -25,7 +26,7 @@ class InicioController extends Controller
     public function getCitasPorFecha(Request $request)
     {
         $fecha = Carbon::parse($request->query('fecha'), 'America/Mexico_City')->format('Y-m-d');
-        \Log::info('Fecha recibida en el backend: ' . $fecha);
+        Log::info('Fecha recibida en el backend: ' . $fecha);
     
         $citas = Cita::with('mascota.dueño')
                     ->whereDate('fecha', $fecha)

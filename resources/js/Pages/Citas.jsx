@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons';
 
 export default function Citas() {
-    const { citas } = usePage().props;
+    const { citas, user } = usePage().props; // Recibe los datos del usuario
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
@@ -58,15 +58,15 @@ export default function Citas() {
                                 </div>
                                 <div className="form-row four-columns">
                                     <label>Nombre:</label>
-                                    <input type="text" />
+                                    <input type="text" defaultValue={user.nombre} />
                                     <label>Apellidos:</label>
-                                    <input type="text" />
+                                    <input type="text" defaultValue={user.apellidos} />
                                 </div>
                                 <div className="form-row four-columns">
                                     <label>Correo:</label>
-                                    <input type="email" />
+                                    <input type="email" defaultValue={user.email} />
                                     <label>Teléfono:</label>
-                                    <input type="tel" />
+                                    <input type="tel" defaultValue={user.telefono} />
                                 </div>
                                 <div className="form-row single-column">
                                     <legend>Datos de la mascota</legend>

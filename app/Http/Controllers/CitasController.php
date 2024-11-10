@@ -19,9 +19,13 @@ class CitasController extends Controller
                      ->orderBy('hora', 'desc')    // Luego ordena por hora en orden descendente dentro de cada fecha
                      ->get();
 
-        // Renderiza la vista 'Citas' con los datos de las citas
+        // Obtiene el usuario logueado
+        $user = Auth::user();
+
+        // Renderiza la vista 'Citas' con los datos de las citas y los datos del usuario
         return Inertia::render('Citas', [
-            'citas' => $citas
+            'citas' => $citas,
+            'user' => $user // Agregar datos del usuario para autocompletar el formulario
         ]);
     }
 

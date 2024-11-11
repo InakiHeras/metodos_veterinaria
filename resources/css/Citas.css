@@ -131,7 +131,6 @@
 .agendar-cita-btn:hover {
     background-color: #d06ca3;
 }
-
 /* Estructura del modal */
 .modal-overlay {
     position: fixed;
@@ -202,6 +201,7 @@
     align-items: center;
 }
 
+
 /* Botones del modal */
 .modal-buttons {
     display: flex;
@@ -231,7 +231,6 @@
 .cancel-btn:hover {
     background-color: #c5463c;
 }
-
 /* Estilo general de inputs */
 .modal-content input[type="text"],
 .modal-content input[type="date"],
@@ -247,6 +246,51 @@
     box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.1);
     font-size: 14px;
     color: #333;
+}
+
+/* Fila de correo: centramos el label y el input */
+.form-row.correo {
+    display: flex;
+    flex-direction: column; /* Los elementos se apilan verticalmente */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    margin-bottom: 15px;
+}
+
+/* Ajustar el ancho del label y el input de correo */
+.form-row.correo label {
+    font-weight: bold;
+    color: #e889b6;
+    margin-bottom: 5px;
+    text-align: center;
+    width: 100%; /* Ajusta el ancho del label para que coincida con el input */
+    max-width: 400px; /* Puedes ajustar el max-width si lo prefieres */
+}
+
+/* Ajustar solo para el input de correo */
+.form-row.correo input[type="email"] {
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+    max-width: 240px; /* Evita que el input se desborde */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f2cbe3;
+    box-sizing: border-box; /* Para que el padding no cause desbordes */
+    font-size: 14px;
+    color: #333;
+}
+
+/* Estilo del label */
+label {
+    font-weight: bold;
+    color: #e889b6;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Estilo específico para el input de teléfono */
+.modal-content input[type="tel"] {
+    max-width: 180px; /* Ajusta este valor según el tamaño que desees */
 }
 
 /* Centrar texto en los inputs de fecha y hora */
@@ -308,3 +352,40 @@ legend {
     margin-right: 10px;
     width: 100px;
 }
+
+/* Ajustar el ancho del input y el menú de resultados */
+.form-row.four-columns input {
+    width: 100%; /* Hace que el input ocupe todo el ancho disponible */
+    position: relative;
+}
+
+/* Contenedor del campo de autocompletado para asegurar que la lista se posicione correctamente */
+.autocomplete {
+    position: relative;
+    width: 240px; /* Ajustado al ancho del input */
+}
+
+/* Estilos de la lista desplegable de autocompletar */
+.autocomplete-results {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 999; /* Asegura que se muestre sobre otros elementos */
+    width: 240px; /* Ajustado al ancho del input */
+    top: 100%; /* Coloca la lista justo debajo del input */
+}
+
+/* Elementos individuales dentro del menú de autocompletar */
+.autocomplete-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-results li:hover {
+    background-color: #f1f1f1;
+}
+

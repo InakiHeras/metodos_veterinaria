@@ -27,14 +27,20 @@ class Mascota extends Model
     ];
 
     // Relación con Usuario (Muchos a Uno)
-    public function usuario(): BelongsTo
-    {
-        return $this->belongsTo(Usuario::class, 'id_cliente');
-    }
+    //public function usuario(): BelongsTo
+    //{
+    //    return $this->belongsTo(Usuario::class, 'id_cliente');
+    //}
 
     // Relación con Cita (Uno a Muchos)
     public function citas(): HasMany
     {
         return $this->hasMany(Cita::class, 'id_mascota');
+    }
+
+     // Relación con Usuario (Muchos a Uno)
+    public function dueño(): BelongsTo
+    {
+         return $this->belongsTo(Usuario::class, 'id_cliente');
     }
 }

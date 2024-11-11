@@ -33,7 +33,7 @@ export default function Base({ children }) {
                             </a>
                         </li>
                         <li>
-                            <a href="/agregar-mascotas" className={`nav-link ${currentPath === '/agregar-mascotas' ? 'active' : ''}`}>
+                            <a href="/inicio_add_mascota" className={`nav-link ${['/inicio_add_mascota', '/add_mascota'].includes(currentPath) ? 'active' : ''}`}>
                                 Agregar mascotas
                             </a>
                         </li>

@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 class Usuario extends Authenticatable
 {
     use HasFactory, HasRoles;
+    use HasFactory, HasRoles;
 
     protected $table = 'usuarios';
     protected $primaryKey = 'id_usuario';
@@ -20,6 +21,7 @@ class Usuario extends Authenticatable
         'nombre',
         'apellidos',
         'telefono',
+        'email',
         'email',
         'password',
         'tipo_usuario',

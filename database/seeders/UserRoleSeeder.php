@@ -16,8 +16,8 @@ class UserRoleSeeder extends Seeder
     public function run(): void
     {
         // Crear los roles de 'veterinario' y 'dueño' si no existen
-        //$veterinarioRole = Role::firstOrCreate(['name' => 'veterinario']);
-        //$duenoRole = Role::firstOrCreate(['name' => 'dueño']);
+        $veterinarioRole = Role::firstOrCreate(['name' => 'veterinario']);
+        $duenoRole = Role::firstOrCreate(['name' => 'dueño']);
 
         // Crear dos usuarios con el rol de 'veterinario'
         $veterinario1 = Usuario::create([

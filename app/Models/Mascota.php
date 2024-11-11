@@ -20,13 +20,14 @@ class Mascota extends Model
         'especie',
         'raza',
         'fecha_nacimiento',
+        //'sexo',
         'peso',
-        'alergias',
+        'alergia',
         'castrado',
     ];
 
     // Relación con Usuario (Muchos a Uno)
-    public function dueño(): BelongsTo
+    public function usuario(): BelongsTo
     {
         return $this->belongsTo(Usuario::class, 'id_cliente');
     }

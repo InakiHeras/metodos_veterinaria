@@ -22,10 +22,23 @@ class CitasController extends Controller
         // Obtiene el usuario logueado
         $user = Auth::user();
 
-        // Renderiza la vista 'Citas' con los datos de las citas y los datos del usuario
+        // Obtiene el dueño asociado al usuario
+        $dueno = $user->dueno;  // Relación entre Usuario y Dueno
+
+        // Verifica si el dueño está presente
+        if (!$dueno) {
+            return Inertia::render('Citas', [
+                'citas' => $citas,
+                'user' => $user,
+                'dueno' => null,  // Si no se encuentra dueño, pasar null
+            ]);
+        }
+
+        // Renderiza la vista 'Citas' con los datos de las citas, usuario y dueño
         return Inertia::render('Citas', [
             'citas' => $citas,
-            'user' => $user // Agregar datos del usuario para autocompletar el formulario
+            'user' => $user,
+            'dueno' => $dueno,  // Pasamos el objeto 'dueno' a la vista
         ]);
     }
 
@@ -45,18 +58,30 @@ class CitasController extends Controller
         // Obtener el usuario logueado
         $user = Auth::user();
 
+        // Verificar si el usuario tiene un "dueno" relacionado
+        $dueno = $user->dueno;  // Utilizamos la relación entre Usuario y Dueno
+
+        // Comprobar si existe el "dueno" antes de continuar
+        if (!$dueno) {
+            return response()->json(['error' => 'No se encontró un Dueno asociado a este usuario'], 404);
+        }
+
+        // Imprimir en consola los datos del usuario
+        \Log::info("ID Usuario: {$user->id}, Nombre: {$user->nombre}, ID Cliente: {$dueno->id_cliente}");
+
         // Si el teléfono ha cambiado, lo actualizamos
         if ($user->telefono !== $request->telefono) {
             $user->telefono = $request->telefono;
             $user->save();
         }
 
-        // Crear la mascota
+        // Crear la mascota, asignando el 'id_cliente' del Dueno
         $mascota = Mascota::create([
             'nombre' => $request->mascota,
             'motivo' => $request->motivo,
             'especie' => $request->especie,
             'raza' => $request->raza,
+            'id_cliente' => $dueno->id_cliente, // Asignamos el 'id_cliente' desde el Dueno
         ]);
 
         // Crear la cita
@@ -67,7 +92,7 @@ class CitasController extends Controller
             'mascota_id' => $mascota->id, // Relacionamos la cita con la mascota creada
         ]);
 
-        // Retornar una respuesta
+        // Retornar una respuesta con la cita creada
         return response()->json([
             'message' => 'Cita agendada con éxito',
             'cita' => $cita

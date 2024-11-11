@@ -1,8 +1,15 @@
 import React from 'react';
-import '../../css/Base.css'; // Aquí puedes agregar los estilos correspondientes
+import { Inertia } from '@inertiajs/inertia'; // Importa Inertia para manejar solicitudes
+import '../../css/Base.css';
 
 export default function Base({ children }) {
     const currentPath = window.location.pathname;
+
+    // Función para manejar el cierre de sesión
+    const handleLogout = (e) => {
+        e.preventDefault();
+        Inertia.post(route('logout')); // Enviar solicitud POST para el logout
+    };
 
     return (
         <div className="base-layout">
@@ -11,7 +18,7 @@ export default function Base({ children }) {
                 <nav className="nav-links">
                     <ul>
                         <li>
-                            <a href="/" className={`nav-link ${currentPath === '/' ? 'active' : ''}`}>
+                            <a href="/inicio" className={`nav-link ${currentPath === '/inicio' ? 'active' : ''}`}>
                                 Inicio
                             </a>
                         </li>
@@ -31,9 +38,10 @@ export default function Base({ children }) {
                             </a>
                         </li>
                         <li>
-                            <a href="/cerrar-sesion" className={`nav-link ${currentPath === '/cerrar-sesion' ? 'active' : ''}`}>
+                            {/* Usa un botón para la acción de logout y llama a handleLogout */}
+                            <button onClick={handleLogout} className="nav-link">
                                 Cerrar sesión
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </nav>

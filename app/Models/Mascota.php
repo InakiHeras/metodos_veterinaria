@@ -26,12 +26,6 @@ class Mascota extends Model
         'castrado',
     ];
 
-    // Relación con Usuario (Muchos a Uno)
-    //public function usuario(): BelongsTo
-    //{
-    //    return $this->belongsTo(Usuario::class, 'id_cliente');
-    //}
-
     // Relación con Cita (Uno a Muchos)
     public function citas(): HasMany
     {

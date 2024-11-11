@@ -16,9 +16,12 @@ class Dueno extends Model
         'id_usuario',
     ];
 
-    // Dueno.php
-    public function usuario()
-    {
-        return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
-    }
+// En el modelo Dueno.php
+public function usuario()
+{
+    // Relación inversa: un Dueno pertenece a un Usuario
+    return $this->belongsTo(Usuario::class, 'id_usuario', 'id_usuario');
 }
+
+}
+

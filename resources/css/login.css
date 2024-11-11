@@ -1,0 +1,65 @@
+@import url('https://fonts.cdnfonts.com/css/ds-digital');
+
+html, body {
+    font-family: "DS Digital", sans-serif;
+    background-image: url('/assets/fondo_inicio.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.bg-pink-100 {
+    background-color: #fce4ec; /* Color de fondo rosado claro */
+}
+
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.max-w-md {
+    max-width: 28rem;
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.h-24 {
+    height: 6rem;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.shadow-md {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.text-pink-500 {
+    color: #ec407a;
+}
+
+.text-gray-600 {
+    color: #4b5563;
+}
+
+.w-full {
+    width: 100%;
+}

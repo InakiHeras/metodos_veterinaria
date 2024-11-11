@@ -32,11 +32,11 @@ return new class extends Migration
             $table->string('nocedula')->nullable();
             $table->timestamps();
         });
+
         // Tabla de mascotas
         Schema::create('mascota', function (Blueprint $table) {
             $table->id('id_mascota');
-            // Relación corregida
-            $table->foreignId('id_cliente')->constrained('dueno', 'id_cliente')->onDelete('cascade');
+            $table->foreignId('id_cliente')->constrained('usuarios', 'id_usuario')->onDelete('cascade');
             $table->string('nombre');
             $table->string('especie');
             $table->string('raza');
@@ -47,7 +47,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         // Tabla de dueños
         Schema::create('dueno', function (Blueprint $table) {
             $table->id('id_cliente');
@@ -57,19 +56,15 @@ return new class extends Migration
 
         // Tabla de citas
         Schema::create('cita', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_cita');
+            $table->foreignId('id_mascota')->constrained('mascota', 'id_mascota')->onDelete('cascade');
+            $table->foreignId('id_veterinario')->constrained('usuarios', 'id_usuario')->onDelete('cascade');
             $table->date('fecha');
-            $table->time('hora');
-            $table->string('motivo');
-            $table->unsignedBigInteger('id_veterinario')->nullable(); // Asegúrate de agregar nullable()
-            $table->unsignedBigInteger('id_mascota');
+            $table->time('hora')->nullable();
+            $table->text('motivo')->nullable();
             $table->timestamps();
-        
-            // Definir las relaciones
-            $table->foreign('id_veterinario')->references('id')->on('usuarios')->onDelete('set null');
-            $table->foreign('id_mascota')->references('id')->on('mascota')->onDelete('cascade');
         });
-        
+
         // Tabla de diagnósticos
         Schema::create('diagnostico', function (Blueprint $table) {
             $table->id('id_diagnostico');

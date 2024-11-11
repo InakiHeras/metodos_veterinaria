@@ -7,8 +7,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\InicioController;
-use App\Http\Controllers\CitasController;
-
 
 Route::get('/citas_fecha', [InicioController::class, 'getCitasPorFecha']);
 
@@ -37,13 +35,10 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/inicio', [InicioController::class, 'index'])->name('inicio');
-    Route::get('/citas', [CitasController::class, 'index']);
-    Route::post('/citas', [CitasController::class, 'store'])->name('citas.store');
-
-    Route::get('/inicio', [InicioController::class, 'index'])->name('inicio');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('/inicio_add_mascota', function () {
         return Inertia::render('inicio_add_mascota');
     });
@@ -58,5 +53,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/inicio_add_mascota', [UserController::class, 'index'])->name('inicio_add_mascota');
 });
+
+
 
 require __DIR__.'/auth.php';

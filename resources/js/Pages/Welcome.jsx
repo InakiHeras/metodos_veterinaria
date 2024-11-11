@@ -15,10 +15,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <Head title="Welcome" />
-            <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
+            {/* Agregamos overflow-hidden al contenedor principal para evitar cualquier scroll no deseado */}
+            <div className="bg-white-50 text-red/50 dark:bg dark:text-white overflow-hidden">
                 <img
                     id="background"
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover overflow-hidden" // Aseguramos que cubra toda el área sin dejar espacio
                     src="/assets/nube.png" // Ajusta esta ruta si mueves la imagen a `public`
                     alt="Background Image"
                 />
@@ -67,75 +68,52 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
                                 {/* Sección Izquierda - Texto */}
                                 <div className="w-1/2 flex flex-col justify-center px-10 text-gray-800">
-    <h1 className="text-pink-600 font-bold text-xl">NOS IMPORTA TU MASCOTA</h1>
-    <h2 className="text-4xl font-semibold my-4">
-        Atención especializada y de emergencia para mascotas
-    </h2>
-    <p className="text-lg">
-        En Pet Society, entendemos que tus mascotas son parte de tu familia. Con casi 24 años de experiencia, estamos
-        comprometidos a proporcionar el más alto nivel de atención médica, bienestar y amor para tus compañeros de vida.
-        <br /> {/* Salto de línea dentro del mismo párrafo */}
-        <br /> {/* Salto de línea dentro del mismo párrafo */}<br /> {/* Salto de línea dentro del mismo párrafo */}
-        Síguenos en:
-    </p>
+                                    <h1 className="text-pink-600 font-bold text-xl">NOS IMPORTA TU MASCOTA</h1>
+                                    <h2 className="text-4xl font-semibold my-4">
+                                        Atención especializada y de emergencia para mascotas
+                                    </h2>
+                                    <p className="text-lg">
+                                        En Pet Society, entendemos que tus mascotas son parte de tu familia. Con casi 24 años de experiencia, estamos
+                                        comprometidos a proporcionar el más alto nivel de atención médica, bienestar y amor para tus compañeros de vida.
+                                        <br /> {/* Salto de línea dentro del mismo párrafo */}
+                                        <br /> {/* Salto de línea dentro del mismo párrafo */}
+                                        Síguenos en:
+                                    </p>
 
-   
-    <div className="flex justify-start items-center space-x-4 py-8 mt-1">
+                                    <div className="flex justify-start items-center space-x-4 py-8 mt-1">
+                                        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-black dark:text-white hover:text-[#3b5998]">
+                                            <img src="/assets/facebook-logo.svg" alt="Facebook" className="w-10 h-10" />
+                                        </a>
+                                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-black dark:text-white hover:text-[#C13584]">
+                                            <img src="/assets/instagram-logo.svg" alt="Instagram" className="w-10 h-10" />
+                                        </a>
+                                        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-black dark:text-white hover:text-[#0077b5]">
+                                            <img src="/assets/linkedin-logo.svg" alt="LinkedIn" className="w-10 h-10" />
+                                        </a>
+                                        <a href="https://www.x.com" target="_blank" rel="noopener noreferrer" aria-label="X" className="text-black dark:text-white hover:text-[#1DA1F2]">
+                                            <img src="/assets/x-logo.svg" alt="X" className="w-10 h-10" />
+                                        </a>
 
-    
-        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-black dark:text-white hover:text-[#3b5998]">
-            <img src="/assets/facebook-logo.svg" alt="Facebook" className="w-10 h-10" />
-        </a>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-black dark:text-white hover:text-[#C13584]">
-            <img src="/assets/instagram-logo.svg" alt="Instagram" className="w-10 h-10" />
-        </a>
-        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-black dark:text-white hover:text-[#0077b5]">
-            <img src="/assets/linkedin-logo.svg" alt="LinkedIn" className="w-10 h-10" />
-        </a>
-        <a href="https://www.x.com" target="_blank" rel="noopener noreferrer" aria-label="X" className="text-black dark:text-white hover:text-[#1DA1F2]">
-            <img src="/assets/x-logo.svg" alt="X" className="w-10 h-10" />
-        </a>
-
-        <div className="text-sm text-black ml-6">
-        <p>Dirección: 123 Calle industrial, Ciudad cancun</p>
-        <p>Teléfono: (998) 456-7890</p>
-    <p>Email: contacto@petsociety.com</p>
-    
-    
-    
-</div>
-                                    
-
-
-
-    </div>
-</div>
-
-
+                                        <div className="text-sm text-black ml-6">
+                                            <p>Dirección: 123 Calle industrial, Ciudad cancun</p>
+                                            <p>Teléfono: (998) 456-7890</p>
+                                            <p>Email: contacto@petsociety.com</p>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 {/* Sección Derecha - Imagen */}
                                 <div className="w-1/2 flex justify-center items-center relative">
                                     <img
                                         src="/assets/gato.png" // Asegúrate de que esta ruta sea correcta
                                         alt="Cat Image"
-                                        className="w-1/2 h-auto"
+                                        className="w-3/4 h-auto ml-auto" // Ajuste de tamaño y alineación a la derecha
                                     />
                                 </div>
-                                
-
                             </div>
                         </main>
-
-                        
-
-        
-    </div>
-</div>
-
-                       
-
-                    
-                
+                    </div>
+                </div>
             </div>
         </>
     );

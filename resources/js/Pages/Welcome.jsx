@@ -1,95 +1,99 @@
-// src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Head } from '@inertiajs/react';
-import logo from './assets/logo.png';
-import gato from './assets/gato.png';
+import { Head, Link } from '@inertiajs/react';
 
-import Welcome from './Welcome';
+export default function Welcome({ auth, laravelVersion, phpVersion }) {
+    const handleImageError = () => {
+        document
+            .getElementById('screenshot-container')
+            ?.classList.add('!hidden');
+        document.getElementById('docs-card')?.classList.add('!row-span-1');
+        document
+            .getElementById('docs-card-content')
+            ?.classList.add('!flex-row');
+        document.getElementById('background')?.classList.add('!hidden');
+    };
 
-function Home() {
-  return (
-    <div
-      className="flex flex-col min-h-screen"
-      style={{
-        backgroundImage: `url('./assets/nube.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <header className="flex justify-between items-center p-5 bg-white bg-opacity-80 shadow w-full fixed top-0 z-10">
-        <img src={logo} alt="Logo" className="w-32 h-auto" />
-        <nav>
-          <ul className="flex gap-5">
-            <li><a href="#nosotros" className="text-gray-800 font-bold">Nosotros</a></li>
-            <li><a href="#blog" className="text-gray-800 font-bold">Blog</a></li>
-            <li><a href="#services" className="text-gray-800 font-bold">Servicios</a></li>
-            <li><a href="#appointment" className="text-gray-800 font-bold">Agendar cita</a></li>
-            <li><a href="#contact" className="text-gray-800 font-bold">Contacto</a></li>
-          </ul>
-        </nav>
-        <div className="flex gap-3">
-          <button className="text-xl">🔍</button>
-          <button className="text-xl">👤</button>
-        </div>
-      </header>
+    return (
+        <>
+            <Head title="Welcome" />
+            <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
+                <img
+                    id="background"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    src="/assets/nube.png" // Ajusta esta ruta si mueves la imagen a `public`
+                    alt="Background Image"
+                />
 
-      <main className="flex-grow flex items-center justify-center mt-20 p-5">
-        <section className="flex items-center justify-between max-w-5xl w-full p-10">
-          <div className="w-1/3">
-            <h2 className="text-pink-500 font-bold text-lg">NOS IMPORTA TU MASCOTA</h2>
-            <h1 className="text-2xl font-bold text-gray-900 my-3">
-              Atención especializada y de emergencia para mascotas
-            </h1>
-            <p className="text-gray-600 mb-5">
-              En Pet Society, entendemos que tus mascotas son parte de tu familia. Con 23 casi 24 años de experiencia, estamos comprometidos a proporcionar el más alto nivel de atención médica, bienestar y amor para tus compañeros de vida.
-            </p>
-            <div className="flex items-center bg-pink-200 bg-opacity-80 p-2 rounded-lg">
-              <input
-                type="text"
-                placeholder="Código postal, dirección o ciudad"
-                className="p-2 text-sm border border-gray-300 rounded-l-md w-60"
-              />
-              <button className="p-2 text-sm bg-pink-500 text-white rounded-r-md">Encuentra una clínica</button>
+                <div className="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
+                    <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
+                        <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
+                            <div className="flex lg:col-start-2 lg:justify-center"></div>
+                            <nav className="-mx-3 flex flex-1 justify-end">
+                                {auth.user ? (
+                                    <Link
+                                        href={route('dashboard')}
+                                        className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    >
+                                        Dashboard
+                                    </Link>
+                                ) : (
+                                    <>
+                                        <Link
+                                            href={route('login')}
+                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-white"
+                                          >
+                                            Log in
+                                        </Link>
+                                        <Link
+                                            href={route('register')}
+                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-white"
+                                          >
+                                            Register
+                                        </Link>
+                                    </>
+                                )}
+                            </nav>
+                        </header>
+
+                        <main className="mt-6">
+                            <div className="flex min-h-screen items-start pt-10">
+
+                                <div className="absolute top-5 left-5">
+                                    <img
+                                        src="/assets/logo.png" // Asegúrate de que esta ruta sea correcta
+                                        alt="Logo"
+                                        className="w-21 h-auto" // Ajusta el tamaño del logo aquí
+                                    />
+                                </div>
+
+                                {/* Sección Izquierda - Texto */}
+                                <div className="w-1/2 flex flex-col justify-center px-10 text-gray-800">
+                                    <h1 className="text-pink-600 font-bold text-xl">NOS IMPORTA TU MASCOTA</h1>
+                                    <h2 className="text-4xl font-semibold my-4">
+                                        Atención especializada y de emergencia para mascotas
+                                    </h2>
+                                    <p className="text-lg">
+                                        En Pet Society, entendemos que tus mascotas son parte de tu familia. Con casi 24 años de experiencia, estamos
+                                        comprometidos a proporcionar el más alto nivel de atención médica, bienestar y amor para tus compañeros de vida.
+                                    </p>
+                                </div>
+
+                                {/* Sección Derecha - Imagen */}
+                                <div className="w-1/2 flex justify-center items-center relative">
+                                    <img
+                                        src="/assets/gato.png" // Asegúrate de que esta ruta sea correcta
+                                        alt="Cat Image"
+                                        className="w-1/2 h-auto"
+                                    />
+                                </div>
+                            </div>
+                        </main>
+
+                        <footer className="py-16 text-center text-sm text-black dark:text-white/70">
+                            Laravel v{laravelVersion} (PHP v{phpVersion})
+                        </footer>
+                    </div>
+                </div>
             </div>
-          </div>
-          <img src={gato} alt="Gato" className="w-72" />
-        </section>
-      </main>
-
-      <footer className="bg-opacity-80 text-gray-800 py-5 text-sm mt-auto">
-        <div className="flex justify-center space-x-5">
-          <a href="#instagram" className="hover:text-pink-500">Instagram</a>
-          <a href="#facebook" className="hover:text-pink-500">Facebook</a>
-          <a href="#twitter" className="hover:text-pink-500">Twitter</a>
-          <a href="#linkedin" className="hover:text-pink-500">LinkedIn</a>
-        </div>
-        <div className="flex justify-center space-x-5 mt-2">
-          <a href="#location" className="hover:text-pink-500">Ubicación</a>
-          <a href="#hours" className="hover:text-pink-500">Horarios</a>
-          <a href="#specialty" className="hover:text-pink-500">Especialidades</a>
-          <a href="#terms" className="hover:text-pink-500">Términos y condiciones</a>
-          <a href="#privacy" className="hover:text-pink-500">Política de privacidad</a>
-        </div>
-        <p className="text-center mt-2">&copy; 2024 Pet Society México. Todos los derechos reservados.</p>
-      </footer>
-    </div>
-  );
+        </>
+    );
 }
-
-function App({ auth, laravelVersion, phpVersion }) {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} /> {/* Ruta para la página de inicio */}
-        <Route 
-          path="/welcome" 
-          element={<Welcome auth={auth} laravelVersion={laravelVersion} phpVersion={phpVersion} />} 
-        /> {/* Ruta para el componente de autenticación */}
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;

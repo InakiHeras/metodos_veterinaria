@@ -23,7 +23,6 @@ html, body {
     position: relative;
     z-index: 1;
     overflow: hidden; /* Asegura que el contenido no se desborde */
-    padding-top: 50px; /* Espacio debajo de la barra fija */
 }
 
 /* Cabecera */
@@ -31,7 +30,6 @@ html, body {
     font-size: 36px;
     color: #67244D;
     text-align: center;
-    margin-top: 50px;
     margin-bottom: 50px;
     font-weight: bold;
 }

@@ -15,40 +15,40 @@ class UserRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear los roles de 'veterinario' y 'dueño' si no existen
-        $veterinarioRole = Role::firstOrCreate(['name' => 'veterinario']);
-        $duenoRole = Role::firstOrCreate(['name' => 'dueño']);
+         // Definir roles que se necesitan
+         $roles = [
+            'admin',
+            'veterinario',
+            'enfermero',
+            'dueño',
+        ];
 
-        // Crear dos usuarios con el rol de 'veterinario'
-        $veterinario1 = Usuario::create([
-            'nombre' => 'Romina',
-            'apellidos' => 'Lopez',
-            'telefono' => '1234567890',
-            'email' => 'romina.lopez@example.com',
-            'password' => Hash::make('password'),
-            'tipo_usuario' => 'veterinario'
-        ]);
-        $veterinario1->assignRole('veterinario');
+        // Crear roles si no existen
+        foreach ($roles as $roleName) {
+            Role::firstOrCreate(['name' => $roleName]);
+        }
 
-        $veterinario2 = Usuario::create([
-            'nombre' => 'Pedro',
-            'apellidos' => 'Zoydo',
-            'telefono' => '0987654321',
-            'email' => 'pedro.zoydo@example.com',
-            'password' => Hash::make('password'),
-            'tipo_usuario' => 'veterinario'
-        ]);
-        $veterinario2->assignRole('veterinario');
+        // Obtener todos los usuarios y asignarles roles según su tipo_usuario
+        $users = Usuario::all();
 
-        // Crear un usuario con el rol de 'dueño'
-        $dueno = Usuario::create([
-            'nombre' => 'Luis',
-            'apellidos' => 'Ramirez',
-            'telefono' => '1122334455',
-            'email' => 'luis.ramirez@example.com',
-            'password' => Hash::make('password'),
-            'tipo_usuario' => 'dueño'
-        ]);
-        $dueno->assignRole('dueño');
+        foreach ($users as $user) {
+            switch ($user->tipo_usuario) {
+                case 'admin':
+                    $user->assignRole('admin');
+                    break;
+                case 'veterinario':
+                    $user->assignRole('veterinario');
+                    break;
+                case 'enfermero':
+                    $user->assignRole('enfermero');
+                    break;
+                case 'dueño':
+                    $user->assignRole('dueño');
+                    break;
+                default:
+                    // No hacer nada si no tiene un tipo_usuario válido
+                    break;
+            }
+        }
     }
 }

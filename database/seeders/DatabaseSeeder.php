@@ -2,33 +2,451 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Usuario;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        // User::factory(10)->create();
-
-        $user = Usuario::create([
-            'nombre' => 'Admin',
-            'apellidos' => 'User',
-            'telefono' => '1234567890',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('1234'),
-            'tipo_usuario' => 'admin'
+        // Insertar usuarios 
+        DB::table('usuarios')->insert([
+            [
+                'nombre' => 'Carlos',
+                'apellidos' => 'Pérez',
+                'telefono' => '5551234567',
+                'email' => 'carlos.perez@example.com',
+                'password' => Hash::make('password1'),
+                'tipo_usuario' => 'dueño',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'Lucía',
+                'apellidos' => 'Gómez',
+                'telefono' => '5552345678',
+                'email' => 'lucia.gomez@example.com',
+                'password' => Hash::make('password2'),
+                'tipo_usuario' => 'dueño',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'Miguel',
+                'apellidos' => 'Rodríguez',
+                'telefono' => '5553456789',
+                'email' => 'miguel.rodriguez@example.com',
+                'password' => Hash::make('password3'),
+                'tipo_usuario' => 'dueño',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'Laura',
+                'apellidos' => 'Martínez',
+                'telefono' => '5554567890',
+                'email' => 'laura.martinez@example.com',
+                'password' => Hash::make('password4'),
+                'tipo_usuario' => 'dueño',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'José',
+                'apellidos' => 'López',
+                'telefono' => '5555678901',
+                'email' => 'jose.lopez@example.com',
+                'password' => Hash::make('password5'),
+                'tipo_usuario' => 'dueño',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'Ana',
+                'apellidos' => 'Sánchez',
+                'telefono' => '5556789012',
+                'email' => 'ana.sanchez@example.com',
+                'password' => Hash::make('password6'),
+                'tipo_usuario' => 'veterinario',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'Luis',
+                'apellidos' => 'Fernández',
+                'telefono' => '5557890123',
+                'email' => 'luis.fernandez@example.com',
+                'password' => Hash::make('password7'),
+                'tipo_usuario' => 'veterinario',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'María',
+                'apellidos' => 'Jiménez',
+                'telefono' => '5558901234',
+                'email' => 'maria.jimenez@example.com',
+                'password' => Hash::make('password8'),
+                'tipo_usuario' => 'enfermero',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'nombre' => 'Admin',
+                'apellidos' => 'User',
+                'telefono' => '1234567890',
+                'email' => 'admin@example.com',
+                'password' => Hash::make('1234'),
+                'tipo_usuario' => 'admin',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
 
-       // $role = Role::create(['name' => 'admin']);
+        // Insertar datos_usuario_tipo
+        DB::table('datos_usuario_tipo')->insert([
+            [
+                'id_usuario' => DB::table('usuarios')->where('nombre', 'Ana')->where('apellidos', 'Sánchez')->value('id_usuario'),
+                'especialidad' => 'Cirugía',
+                'turno' => 'Matutino',
+                'nocedula' => 'CED12345',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => DB::table('usuarios')->where('nombre', 'Luis')->where('apellidos', 'Fernández')->value('id_usuario'),
+                'especialidad' => 'Dermatología',
+                'turno' => 'Vespertino',
+                'nocedula' => 'CED67890',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => DB::table('usuarios')->where('nombre', 'María')->where('apellidos', 'Jiménez')->value('id_usuario'),
+                'especialidad' => 'Cuidados generales',
+                'turno' => 'Nocturno',
+                'nocedula' => 'ENF45678',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
 
-        $user->assignRole('admin');
+        // Insertar mascotas
+        DB::table('mascota')->insert([
+            [
+                'id_usuario' => 1,
+                'nombre' => 'Bobby',
+                'especie' => 'Perro',
+                'raza' => 'Golden Retriever',
+                'fecha_nacimiento' => '2020-05-15',
+                'peso' => 30.5,
+                'alergias' => 'Ninguna',
+                'castrado' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 1,
+                'nombre' => 'Whiskers',
+                'especie' => 'Gato',
+                'raza' => 'Siamés',
+                'fecha_nacimiento' => '2022-03-12',
+                'peso' => 4.2,
+                'alergias' => 'Polen',
+                'castrado' => false,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 2,
+                'nombre' => 'Sparky',
+                'especie' => 'Perro',
+                'raza' => 'Chihuahua',
+                'fecha_nacimiento' => '2021-01-20',
+                'peso' => 3.1,
+                'alergias' => 'Ninguna',
+                'castrado' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 3,
+                'nombre' => 'Nibbles',
+                'especie' => 'Hamster',
+                'raza' => 'Sirio',
+                'fecha_nacimiento' => '2023-06-05',
+                'peso' => 0.1,
+                'alergias' => 'Ninguna',
+                'castrado' => false,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 4,
+                'nombre' => 'Fluffy',
+                'especie' => 'Gato',
+                'raza' => 'Persa',
+                'fecha_nacimiento' => '2020-10-30',
+                'peso' => 4.5,
+                'alergias' => 'Ninguna',
+                'castrado' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 4,
+                'nombre' => 'Spot',
+                'especie' => 'Hurón',
+                'raza' => 'Blanco',
+                'fecha_nacimiento' => '2021-08-16',
+                'peso' => 1.0,
+                'alergias' => 'Ácaros',
+                'castrado' => false,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 5,
+                'nombre' => 'Bella',
+                'especie' => 'Perro',
+                'raza' => 'Bulldog',
+                'fecha_nacimiento' => '2019-04-01',
+                'peso' => 20.0,
+                'alergias' => 'Ninguna',
+                'castrado' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 5,
+                'nombre' => 'Daisy',
+                'especie' => 'Gato',
+                'raza' => 'Maine Coon',
+                'fecha_nacimiento' => '2021-09-12',
+                'peso' => 5.5,
+                'alergias' => 'Ninguna',
+                'castrado' => false,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_usuario' => 5,
+                'nombre' => 'Shadow',
+                'especie' => 'Hurón',
+                'raza' => 'Negro',
+                'fecha_nacimiento' => '2022-11-23',
+                'peso' => 1.2,
+                'alergias' => 'Polén',
+                'castrado' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+
+        // Insertar citas
+        DB::table('cita')->insert([
+            [
+                'id_mascota' => 1,
+                'id_veterinario' => 6,
+                'fecha' => Carbon::now()->subDay(),
+                'hora' => '10:00:00',
+                'motivo' => 'Castración',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_mascota' => 2,
+                'id_veterinario' => 8,
+                'fecha' => Carbon::now()->subDay(),
+                'hora' => '14:00:00',
+                'motivo' => 'Vacunación de seguimiento',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_mascota' => 3,
+                'id_veterinario' => 7,
+                'fecha' => Carbon::now(),
+                'hora' => '09:00:00',
+                'motivo' => 'Revisión general',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_mascota' => 4,
+                'id_veterinario' => 7,
+                'fecha' => Carbon::now()->addDay(),
+                'hora' => '08:30:00',
+                'motivo' => 'Castrasión programada',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_mascota' => 5,
+                'id_veterinario' => 8,
+                'fecha' => Carbon::now()->addDay(),
+                'hora' => '10:30:00',
+                'motivo' => 'Revisión de peso',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_mascota' => 6,
+                'id_veterinario' => 8,
+                'fecha' => Carbon::now()->addDay(),
+                'hora' => '11:30:00',
+                'motivo' => 'Desparasitación',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_mascota' => 7,
+                'id_veterinario' => 6,
+                'fecha' => Carbon::now()->addDay(),
+                'hora' => '13:00:00',
+                'motivo' => 'tratamiento de alergias',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_mascota' => 1,
+                'id_veterinario' => 7,
+                'fecha' => Carbon::now()->addDay(),
+                'hora' => '15:00:00',
+                'motivo' => 'Seguimiento de tratamiento',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+
+        // Insertar diagnósticos
+        DB::table('diagnostico')->insert([
+            [
+                'id_cita' => 1,
+                'observaciones' => 'Paciente en buen estado, listo para castración.',
+                'enfermedad' => 'Preparación para castración',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_cita' => 2,
+                'observaciones' => 'Seguimiento de vacunación completado sin complicaciones.',
+                'enfermedad' => 'Vacunación de seguimiento',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_cita' => 3,
+                'observaciones' => 'Examen general sin anomalías.',
+                'enfermedad' => 'Salud estable',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_cita' => 4,
+                'observaciones' => 'Paciente preparado para castración.',
+                'enfermedad' => 'Castración programada',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_cita' => 5,
+                'observaciones' => 'Revisión de peso, necesita ajustar dieta.',
+                'enfermedad' => 'Delgado',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_cita' => 6,
+                'observaciones' => 'Desparasitación aplicada, seguimiento en una semana.',
+                'enfermedad' => 'Parásitos internos',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_cita' => 7,
+                'observaciones' => 'Tratamiento para alergias en curso.',
+                'enfermedad' => 'Dermatitis alérgica',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_cita' => 8,
+                'observaciones' => 'Seguimiento de tratamiento anterior. Sin complicaciones.',
+                'enfermedad' => 'Control de infección',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
+
+        // Insertar recetas
+        DB::table('recetas')->insert([
+            [
+                'id_diagnostico' => 1,
+                'nombre_medicamento' => 'Anestésico local',
+                'frecuencia' => 'Durante procedimiento',
+                'via_administracion' => 'Inyectable',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_diagnostico' => 2,
+                'nombre_medicamento' => 'Vacuna anual',
+                'frecuencia' => 'Única dosis',
+                'via_administracion' => 'Inyectable',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_diagnostico' => 3,
+                'nombre_medicamento' => 'Suplemento multivitamínico',
+                'frecuencia' => 'Diario',
+                'via_administracion' => 'Oral',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_diagnostico' => 4,
+                'nombre_medicamento' => 'Antibiótico preventivo',
+                'frecuencia' => 'Cada 12 horas por 5 días',
+                'via_administracion' => 'Oral',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_diagnostico' => 5,
+                'nombre_medicamento' => 'Suplemento de fibra',
+                'frecuencia' => '1 vez al día',
+                'via_administracion' => 'Oral',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_diagnostico' => 6,
+                'nombre_medicamento' => 'Antiparasitario',
+                'frecuencia' => 'Única dosis',
+                'via_administracion' => 'Oral',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_diagnostico' => 7,
+                'nombre_medicamento' => 'Antihistamínico',
+                'frecuencia' => 'Cada 24 horas',
+                'via_administracion' => 'Oral',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'id_diagnostico' => 1,
+                'nombre_medicamento' => 'Antibiótico',
+                'frecuencia' => 'Cada 12 horas',
+                'via_administracion' => 'Oral',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ]);
     }
 }

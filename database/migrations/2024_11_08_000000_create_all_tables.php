@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellidos');
             $table->string('telefono');
-            $table->string('correo')->unique();
+            $table->string('email')->unique();
             $table->string('password');
-            $table->enum('tipo_usuario', ['enfermero', 'veterinario', 'dueño']);
+            $table->enum('tipo_usuario', ['enfermero', 'veterinario', 'dueño', 'admin']);
             $table->timestamps();
         });
 
@@ -36,7 +36,7 @@ return new class extends Migration
         // Tabla de mascotas
         Schema::create('mascota', function (Blueprint $table) {
             $table->id('id_mascota');
-            $table->foreignId('id_cliente')->constrained('usuarios', 'id_usuario')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('usuarios', 'id_usuario')->onDelete('cascade');
             $table->string('nombre');
             $table->string('especie');
             $table->string('raza');
@@ -44,13 +44,6 @@ return new class extends Migration
             $table->decimal('peso', 5, 2)->nullable();
             $table->text('alergias')->nullable();
             $table->boolean('castrado')->default(false);
-            $table->timestamps();
-        });
-
-        // Tabla de dueños
-        Schema::create('dueno', function (Blueprint $table) {
-            $table->id('id_cliente');
-            $table->foreignId('id_usuario')->constrained('usuarios', 'id_usuario')->onDelete('cascade');
             $table->timestamps();
         });
 

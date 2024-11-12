@@ -15,25 +15,26 @@ class Mascota extends Model
     protected $primaryKey = 'id_mascota';
 
     protected $fillable = [
-        'id_cliente',
         'nombre',
         'especie',
         'raza',
         'fecha_nacimiento',
+        //'sexo',
         'peso',
-        'alergias',
+        'alergia',
         'castrado',
     ];
 
-    public function dueno()
-    {
-        return $this->belongsTo(Dueno::class, 'id_cliente', 'id_cliente');
-    }
-    
+    // Relación con Usuario (Muchos a Uno)
+    //public function usuario(): BelongsTo
+    //{
+    //    return $this->belongsTo(Usuario::class, 'id_cliente');
+    //}
 
     // Relación con Cita (Uno a Muchos)
     public function citas(): HasMany
     {
         return $this->hasMany(Cita::class, 'id_mascota');
     }
+
 }

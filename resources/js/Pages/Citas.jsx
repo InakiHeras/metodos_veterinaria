@@ -12,16 +12,18 @@ export default function Citas() {
     const [searchTerm, setSearchTerm] = useState(""); // Estado para almacenar el término de búsqueda
     const [filteredDuenos, setFilteredDuenos] = useState([]); // Estado para los dueños filtrados
     const [formData, setFormData] = useState({
-        duenoId: '', 
-        mascota: '',
+        duenoId: '',
+        mascotaId: '', // Ahora almacenamos el ID de la mascota
         motivo: '',
-        especie: '',
-        raza: '',
         fecha: '',
         hora: '',
-        telefono: '', // Agregado para almacenar el teléfono
-        email: '' // Agregado para almacenar el email
+        veterinario: '',
+        telefono: '',
+        email: ''
     });
+
+    const [mascotas, setMascotas] = useState([]); // Estado para las mascotas del dueño seleccionado
+    const [isMascotaOpen, setIsMascotaOpen] = useState(false); // Estado para controlar si el menú de mascotas está abierto
 
     useEffect(() => {
         // Filtrar dueños basados en el término de búsqueda
@@ -37,7 +39,20 @@ export default function Citas() {
     }, [searchTerm, duenos]);
 
     const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setFormData({
+            duenoId: '',
+            mascotaId: '', // Restablecemos mascota
+            motivo: '',
+            fecha: '',
+            hora: '',
+            veterinario: '',
+            telefono: '',
+            email: ''
+        });
+        setSearchTerm(""); // Limpiar el término de búsqueda
+    };
 
     const handleChange = (e) => {
         setFormData({
@@ -47,42 +62,45 @@ export default function Citas() {
     };
 
     const handleSelectDueno = (dueno) => {
-        console.log("Dueño seleccionado:", dueno);  // Muestra todo el objeto 'dueno' en la consola
-        console.log("Email del dueño:", dueno.email);  // Verifica el correo
-        console.log("Teléfono del dueño:", dueno.telefono);  // Verifica el teléfono
-    
-        // Actualizar los campos del formulario con los datos del dueño
         setFormData({
             ...formData,
-            duenoId: dueno.id_cliente,  // ID del cliente (dueño)
-            telefono: dueno.telefono || '',  // Asignamos el teléfono
-            email: dueno.email || '',  // Asignamos el correo
+            duenoId: dueno.id_usuario,
+            telefono: dueno.telefono || '',
+            email: dueno.email || ''
         });
-    
-        // Actualiza el campo de búsqueda con el nombre del dueño
         setSearchTerm(dueno.nombre_completo);
-    
-        // Ocultar la lista de resultados
+        setFilteredDuenos([]); // Limpiar los resultados filtrados al seleccionar un dueño
+
+        // Verificar si el dueño tiene mascotas asociadas
+        if (dueno.mascotas && dueno.mascotas.length > 0) {
+            setMascotas(dueno.mascotas); // Cargar las mascotas asociadas
+        } else {
+            setMascotas([]); // Si no tiene mascotas, limpiar el estado de mascotas
+        }
+
+        console.log("Dueño seleccionado:", dueno.nombre_completo);
+        console.log("ID del dueño:", dueno.id_usuario);
+        console.log("Mascotas del dueño:", dueno.mascotas);
+
+        // Cerrar el menú de dueños después de seleccionar uno
         setFilteredDuenos([]);
     };
-    
+
+    const handleSelectMascota = (mascota) => {
+        setFormData({
+            ...formData,
+            mascotaId: mascota.id_mascota
+        });
+        setIsMascotaOpen(false); // Cerramos el menú de mascotas después de seleccionar
+        console.log("Mascota seleccionada:", mascota.nombre);
+        console.log("ID de la mascota seleccionada:", mascota.id_mascota);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         Inertia.post('/citas', formData, {
             onSuccess: () => {
-                closeModal();
-                setFormData({
-                    duenoId: '',
-                    mascota: '',
-                    motivo: '',
-                    especie: '',
-                    raza: '',
-                    fecha: '',
-                    hora: '',
-                    telefono: '',
-                    email: ''
-                });
-                setSearchTerm("");
+                closeModal(); // Al enviar, también cerramos el modal y limpiamos los campos
             },
         });
     };
@@ -131,8 +149,7 @@ export default function Citas() {
                                     <legend>Datos del dueño</legend>
                                 </div>
 
-                                {/* Campo de búsqueda para dueños */}
-                                <div className="form-row three-columns"> {/* Cambié a three-columns */}
+                                <div className="form-row three-columns">
                                     <label>Dueño:</label>
                                     <div className="autocomplete">
                                         <input
@@ -142,12 +159,11 @@ export default function Citas() {
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)} 
                                         />
-                                        {/* Mostrar lista filtrada de dueños */}
                                         {searchTerm && filteredDuenos.length > 0 && (
                                             <ul className="autocomplete-results">
                                                 {filteredDuenos.map((dueno) => (
                                                     <li
-                                                        key={dueno.id_cliente}
+                                                        key={dueno.id_usuario}
                                                         onClick={() => handleSelectDueno(dueno)}
                                                     >
                                                         {dueno.nombre_completo}
@@ -164,12 +180,13 @@ export default function Citas() {
                                         value={formData.telefono} 
                                         onChange={handleChange} 
                                     />
-                                </div>
-
-                                {/* Fila para correo, solo dos columnas */}
-                                <div className="form-row two-columns">
                                     <label>Correo:</label>
-                                    <input type="email" name="email" value={formData.email} onChange={handleChange} />
+                                    <input 
+                                        type="email" 
+                                        name="email" 
+                                        value={formData.email} 
+                                        onChange={handleChange} 
+                                    />
                                 </div>
 
                                 <div className="form-row single-column">
@@ -178,20 +195,42 @@ export default function Citas() {
 
                                 <div className="form-row two-columns">
                                     <label>Mascota:</label>
-                                    <input type="text" name="mascota" value={formData.mascota} onChange={handleChange} />
+                                    <div className="autocomplete-mascota">
+                                        <input
+                                            type="text"
+                                            name="searchTermMascota"
+                                            placeholder="Escribe el nombre de la mascota"
+                                            value={formData.mascotaId ? mascotas.find(mascota => mascota.id_mascota === formData.mascotaId)?.nombre : ""}
+                                            onChange={(e) => {
+                                                setFormData({ ...formData, mascotaId: e.target.value });
+                                                setIsMascotaOpen(true); // Abrimos el menú de opciones de mascotas
+                                            }}
+                                        />
+                                        {isMascotaOpen && formData.mascotaId && mascotas.length > 0 && (
+                                            <ul className="autocomplete-results">
+                                                {mascotas.map((mascota) => (
+                                                    <li
+                                                        key={mascota.id_mascota}
+                                                        onClick={() => handleSelectMascota(mascota)}
+                                                    >
+                                                        {mascota.nombre}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+
                                     <label>Motivo:</label>
                                     <input type="text" name="motivo" value={formData.motivo} onChange={handleChange} />
                                 </div>
 
                                 <div className="form-row three-columns">
-                                    <label>Especie:</label>
-                                    <input type="text" name="especie" value={formData.especie} onChange={handleChange} />
-                                    <label>Raza:</label>
-                                    <input type="text" name="raza" value={formData.raza} onChange={handleChange} />
                                     <label>Fecha:</label>
                                     <input type="date" name="fecha" value={formData.fecha} onChange={handleChange} />
                                     <label>Hora:</label>
                                     <input type="time" name="hora" value={formData.hora} onChange={handleChange} />
+                                    <label>Veterinario:</label>
+                                    <input type="text" name="veterinario" value={formData.veterinario} onChange={handleChange} />
                                 </div>
 
                                 <div className="modal-buttons">

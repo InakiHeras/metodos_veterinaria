@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PetController;
@@ -52,6 +53,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuarios/{id}', [UserController::class, 'show'])->name('usuarios.show');
 
     Route::get('/inicio_add_mascota', [UserController::class, 'index'])->name('inicio_add_mascota');
+
+    Route::get('/historial', [HistorialController::class, 'index'])->name('historial');
 });
 
 

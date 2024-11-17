@@ -39,7 +39,7 @@ class PetController extends Controller
             'peso' => $request->peso,
             'alergias' => $request->alergias,
             'castrado' => $request->castrado,
-            'id_cliente' => $user->id_usuario,  // Usar el userId para asociar la mascota
+            'id_usuario' => $user->id_usuario,  // Usar el userId para asociar la mascota
         ]);
 
         // Retornar la respuesta como JSON, ya que Inertia trabaja con JSON

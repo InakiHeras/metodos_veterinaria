@@ -15,8 +15,6 @@ class Usuario extends Authenticatable
     protected $table = 'usuarios';
     protected $primaryKey = 'id_usuario';
 
-    public $timestamps = false;
-
     protected $fillable = [
         'nombre',
         'apellidos',
@@ -36,7 +34,7 @@ class Usuario extends Authenticatable
     // Relación con Mascota (Uno a Muchos)
     public function mascotas(): HasMany
     {
-        return $this->hasMany(Mascota::class, 'id_cliente');
+        return $this->hasMany(Mascota::class, 'id_usuario');
     }
 
     // Relación con Cita (Uno a Muchos, como veterinario o enfermero)

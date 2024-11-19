@@ -11,7 +11,7 @@ class Mascota extends Model
 {
     use HasFactory;
 
-    protected $table = 'mascota';
+    protected $table = 'mascotas';
     protected $primaryKey = 'id_mascota';
 
     protected $fillable = [

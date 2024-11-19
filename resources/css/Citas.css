@@ -330,9 +330,7 @@ label {
     max-width: 300px;
 }
 
-.modal-content input[name="veterinario"]{
-    width: 350px; /* Define un ancho fijo de 200px (puedes ajustar el valor) */
-}
+
 
 
 /* Estilo para el encabezado en el modal */
@@ -443,5 +441,38 @@ legend {
 }
 
 .autocomplete-mascota .autocomplete-results li:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* Estilos específicos para el autocompletado de veterinarios */
+.autocomplete-veterinario {
+    position: relative;
+    width: 100%;
+    max-width: 300px; /* El mismo ancho que otros inputs */
+    font-size: 14px;
+}
+
+/* Estilos para los resultados de autocompletado de veterinarios */
+.autocomplete-veterinario .autocomplete-results {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%;
+    top: 100%;
+    font-size: 14px;
+}
+
+.autocomplete-veterinario .autocomplete-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-veterinario .autocomplete-results li:hover {
     background-color: #f1f1f1;
 }

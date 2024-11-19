@@ -6,10 +6,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\InicioController;
 
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\CitasController;
-
-Route::get('/citas_fecha', [InicioController::class, 'getCitasPorFecha']);
 
 
 Route::get('/base', function () {
@@ -21,6 +20,8 @@ Route::get('/citas', function () {
     return Inertia::render('Citas');
 });
 
+
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -30,6 +31,7 @@ Route::get('/', function () {
     ]);
 });
 
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -37,7 +39,18 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/inicio', [InicioController::class, 'index'])->name('inicio');
     Route::get('/citas', [CitasController::class, 'index']);
-    Route::post('/citas', [CitasController::class, 'store'])->name('citas.store');
+
+    Route::post('/citas', function (Request $request) {
+        // Obtén los datos del formulario
+        $data = $request->all();
+    
+        // Retorna la vista de Inertia pasando los datos obtenidos
+        return Inertia::render('AgregarCita', [
+            'data' => $data,  // Aquí pasas la variable 'data'
+        ]);
+    });
+    
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -46,3 +59,4 @@ Route::middleware('auth')->group(function () {
 
 
 require __DIR__.'/auth.php';
+

@@ -139,6 +139,54 @@ const Inicio = ({ citas: initialCitas, userName, userRole }) => {
                         </div>
                     )}
 
+
+
+
+
+                    {/* Mostrar la sección de citas solo si el rol es 'veterinario' */}
+                    {userRole === 'dueño' && (
+                        <div className="left-section">
+                            <div className="subheader">Citas de hoy</div>
+
+                            <div className="date-filter">
+                                <label>Fecha:</label>
+                                <input
+                                    type="date"
+                                    value={fecha}
+                                    onChange={handleDateChange}
+                                />
+                            </div>
+
+                            <div className="table-container" key={fecha}>
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th> </th>
+                                            <th>Hora</th>
+                                            <th>Razón</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {citas.map((cita) => (
+                                            <tr key={cita.id_cita} className={completedCitas[cita.id_cita] ? "completed" : ""}>
+                                                <td>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={!!completedCitas[cita.id_cita]}
+                                                        onChange={() => handleCheckboxChange(cita.id_cita)}
+                                                    />
+                                                </td>
+                                                <td>{cita.hora}</td>
+                                                <td>{cita.motivo}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )}
+
+
                     <div className="right-section">
                         <div className="time-container">
                             <div className="time-inner">
@@ -161,9 +209,13 @@ const Inicio = ({ citas: initialCitas, userName, userRole }) => {
                             ) : (
                                 <p>{eventText}</p>
                             )}
-                            <button className="edit-button" onClick={handleEditClick}>Editar</button>
+                            {/* Mostrar el botón de editar solo si el rol es 'veterinario' */}
+                            {userRole === 'veterinario' && (
+                                <button className="edit-button" onClick={handleEditClick}>Editar</button>
+                            )}
                         </div>
                     </div>
+
                 </div>
             </div>
         </Base>

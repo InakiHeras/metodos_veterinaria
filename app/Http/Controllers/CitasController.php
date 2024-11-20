@@ -77,7 +77,7 @@ class CitasController extends Controller
         }
     
         // Verificar que el veterinario existe
-        $veterinario = Usuario::where('id_usuario', $request->veterinarioId)
+        $veterinario = Usuario::where('id_usuario', $request->id_veterinario)
                               ->where('tipo_usuario', 'veterinario')
                               ->first();
     
@@ -107,29 +107,7 @@ class CitasController extends Controller
             'id_dueno' => $dueno->id_usuario,
             'id_mascota' => $request->mascotaId, // Guardar el ID de la mascota si se proporciona
         ]);
-    
-        if (!$cita) {
-            return Inertia::render('Citas', [
-                'error' => 'Hubo un problema al crear la cita',
-            ]);
-        }
-    
-        // Redirigir a la página de citas
-        return Inertia::location('/citas');
     }
     
-    
-
-    public function getAvailableDates()
-    {
-        // Suponiendo que cada cita tiene un campo `fecha` y `hora`
-        $allDates = Cita::select('fecha')
-            ->whereBetween('hora', ['09:00:00', '21:00:00'])
-            ->groupBy('fecha')
-            ->havingRaw('COUNT(*) < 12') // Suponiendo 12 citas como el límite de disponibilidad por día
-            ->pluck('fecha');
-
-        return response()->json($allDates);
-    }
 
 }

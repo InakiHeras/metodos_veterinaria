@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/inicio', [InicioController::class, 'index'])->name('inicio');
     Route::get('/citas', [CitasController::class, 'index']);
 
-    // Cambiamos la lógica aquí para usar el controlador 'store'
+    // usar el controlador 'store'
     Route::post('/citas', [CitasController::class, 'store']);
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

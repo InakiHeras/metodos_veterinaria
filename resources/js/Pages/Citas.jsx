@@ -52,7 +52,7 @@ export default function Citas() {
                     <AgregarCita
                         duenos={duenos}
                         veterinarios={veterinarios} // Asegúrate de pasar veterinarios
-                        mascotas={duenos.filter(dueno => dueno.mascotas).flatMap(dueno => dueno.mascotas)}
+                        mascota={duenos.filter(dueno => dueno.mascota).flatMap(dueno => dueno.mascota)}
                         onClose={closeModal}  // Cambiado a "onClose"
                     />
                 )}

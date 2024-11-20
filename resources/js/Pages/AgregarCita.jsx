@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+
 import '../../css/Citas.css';
+
+import { useState, useEffect } from 'react';
+import { Inertia } from '@inertiajs/inertia';
+
 
 export default function AgregarCita({ duenos, veterinarios, onClose }) {
 
@@ -90,27 +93,24 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
     };
     
     
+// Manejar el envío del formulario
+const handleSubmit = (e) => {
+    e.preventDefault();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Verificar que todos los campos están completos
-        if (!formData.duenoId || !formData.mascotaId || !formData.id_veterinario || !formData.motivo || !formData.fecha || !formData.hora) {
-            console.log("Por favor complete todos los campos.");
-            return; // Puedes agregar un mensaje de error o validación adicional aquí
-        }
-        console.log("Formulario enviado con los datos:", formData);
-        
-        // Enviar los datos utilizando Inertia
-        Inertia.post('/citas', formData, {
-            onSuccess: () => {
-                if (onClose) onClose(); // Cerrar el modal o realizar otra acción al éxito
-            },
-            onError: (error) => {
-                console.log("Error al enviar la cita:", error);
-                // Puedes manejar errores aquí, como mostrar un mensaje de error al usuario
-            }
+    try {
+        // Realizar la solicitud POST a la ruta /citas
+        Inertia.post('/citas', {
+            ...formData, // Datos del formulario (incluye los campos de la cita)
         });
-    };
+
+        console.log('Datos enviados a la tabla de citas:', formData);
+        alert('¡Cita agregada exitosamente!');
+    } catch (error) {
+        console.error('Error al enviar los datos:', error);
+        alert('Hubo un error al agregar la cita.');
+    }
+};
+
     
 
     const handleCancel = () => {

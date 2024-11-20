@@ -40,18 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/inicio', [InicioController::class, 'index'])->name('inicio');
     Route::get('/citas', [CitasController::class, 'index']);
 
-    Route::post('/citas', function (Request $request) {
-        // Obtén los datos del formulario
-        $data = $request->all();
+    // Cambiamos la lógica aquí para usar el controlador 'store'
+    Route::post('/citas', [CitasController::class, 'store']);
     
-        // Retorna la vista de Inertia pasando los datos obtenidos
-        return Inertia::render('AgregarCita', [
-            'data' => $data,  // Aquí pasas la variable 'data'
-        ]);
-    });
-    
-
-
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

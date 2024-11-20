@@ -20,7 +20,7 @@ class UserController extends Controller
         //$userRole = $user->getRoleNames()->first();
 
         $usuario_mascota = Usuario::select('usuarios.id_usuario', 'mascota.nombre as mascota', 'usuarios.nombre', 'usuarios.email', 'usuarios.telefono')
-        ->join('mascota', 'usuarios.id_usuario','=','mascota.id_cliente')->where('usuarios.id_usuario', $user->id_usuario)->get();
+        ->join('mascota', 'usuarios.id_usuario','=','mascota.id_usuario')->where('usuarios.id_usuario', $user->id_usuario)->get();
 
         return Inertia::render('inicio_add_mascota', ['usuario_mascota' => $usuario_mascota]);
 

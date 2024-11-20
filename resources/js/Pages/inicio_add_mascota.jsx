@@ -6,6 +6,7 @@ import { usePage } from '@inertiajs/react';
 export default function ListaMascotas() {
 
     const { usuario_mascota } = usePage().props;
+    console.log(usuario_mascota);
 
 
     return (

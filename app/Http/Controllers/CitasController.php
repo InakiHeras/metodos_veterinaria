@@ -71,9 +71,9 @@ class CitasController extends Controller
                         ->first();
     
         if (!$dueno) {
-            return Inertia::render('Citas', [
+            return response()->json([
                 'error' => 'No se encontró un dueño con el ID proporcionado',
-            ]);
+            ], 404);
         }
     
         // Verificar que el veterinario existe
@@ -82,9 +82,9 @@ class CitasController extends Controller
                               ->first();
     
         if (!$veterinario) {
-            return Inertia::render('Citas', [
+            return response()->json([
                 'error' => 'No se encontró un veterinario con el ID proporcionado',
-            ]);
+            ], 404);
         }
     
         // Verificar si ya existe una cita en la misma fecha y hora
@@ -93,9 +93,9 @@ class CitasController extends Controller
                             ->first();
     
         if ($existingCita) {
-            return Inertia::render('Citas', [
+            return response()->json([
                 'error' => 'Ya existe una cita en esa fecha y hora',
-            ]);
+            ], 400);
         }
     
         // Crear la nueva cita

@@ -7,11 +7,22 @@ import Base from './Base';
 import '../../css/Citas.css';
 
 export default function Citas() {
-    const { citas, duenos, veterinarios } = usePage().props; // Asegúrate de que veterinarios estén disponibles
+    const { citas, duenos, veterinarios, user } = usePage().props; // Asegúrate de que user esté disponible
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    const filteredCitas = user.tipo_usuario === 'dueño'
+    ? citas.filter(cita => {
+        // Verificar que cada cita tiene la propiedad mascota
+        console.log('Cita:', cita);
+        console.log('ID Usuario:', user.id_usuario);
+        console.log('Mascota ID Usuario:', cita.mascota?.id_usuario); // Asegúrate de que "mascota" existe
+        return cita.mascota && cita.mascota.id_usuario === user.id_usuario;
+    })
+    : citas;
+
 
     return (
         <Base>
@@ -27,7 +38,7 @@ export default function Citas() {
                             </tr>
                         </thead>
                         <tbody>
-                            {citas.map((cita) => (
+                            {filteredCitas.map((cita) => (
                                 <tr key={cita.id_cita}>
                                     <td>{cita.fecha}</td>
                                     <td>{cita.hora}</td>
@@ -48,14 +59,16 @@ export default function Citas() {
 
                 <button className="action-btn agendar-cita-btn" onClick={openModal}>Agendar cita</button>
 
-                {isModalOpen && (
-                    <AgregarCita
-                        duenos={duenos}
-                        veterinarios={veterinarios} // Asegúrate de pasar veterinarios
-                        mascota={duenos.filter(dueno => dueno.mascota).flatMap(dueno => dueno.mascota)}
-                        onClose={closeModal}  // Cambiado a "onClose"
-                    />
-                )}
+                {isModalOpen &&(
+                <AgregarCita
+                    duenos={duenos}
+                    veterinarios={veterinarios} 
+                    mascota={duenos.filter(dueno => dueno.mascotas).flatMap(dueno => dueno.mascotas)}
+                    user={user}  // Pasar el objeto 'user' completo si es dueño
+                    onClose={closeModal}
+                />
+            )}
+
             </div>
         </Base>
     );

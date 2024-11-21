@@ -3,13 +3,11 @@ import '../../css/Citas.css';
 import { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 
-
-export default function AgregarCita({ duenos, veterinarios, onClose }) {
-
+export default function AgregarCita({ duenos, veterinarios, onClose, user }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredDuenos, setFilteredDuenos] = useState([]);
-    const [searchTermVeterinario, setSearchTermVeterinario] = useState(""); // Término de búsqueda para veterinarios
-    const [filteredVeterinarios, setFilteredVeterinarios] = useState([]); // Veterinarios filtrados
+    const [searchTermVeterinario, setSearchTermVeterinario] = useState("");
+    const [filteredVeterinarios, setFilteredVeterinarios] = useState([]);
     const [mascota, setMascota] = useState([]);
     const [isMascotaOpen, setIsMascotaOpen] = useState(false);
 
@@ -23,6 +21,40 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
         telefono: '',
         email: ''
     });
+
+
+    useEffect(() => {
+        if (user && user.tipo_usuario === "dueño") {
+            // Filtrar el dueño según el duenoId
+            const dueno = duenos.find(d => d.id_usuario === user.id_usuario);
+            if (dueno && dueno.mascota) {  // Usar `mascota` en singular
+                setMascota(dueno.mascota);  // Establecer la mascota del dueño
+            }
+            
+            setCitaData({
+                duenoId: user.id_usuario,
+                dueno: `${user.nombre} ${user.apellidos}` || '',
+                telefono: user.telefono || '',
+                email: user.email || '',
+            });
+        }
+    }, [user, duenos]);
+    
+
+    const handleSelectDueno = (dueno) => {
+        setCitaData({
+            ...citaData,
+            duenoId: dueno.id_usuario,
+            dueno: dueno.nombre_completo,
+            telefono: dueno.telefono || '',
+            email: dueno.email || ''
+        });
+        setSearchTerm(dueno.nombre_completo);
+        setFilteredDuenos([]);
+        setMascota(dueno.mascota || []);
+        console.log("Dueño seleccionado:", dueno);
+    };
+    
 
     // Filtrado de dueños
     useEffect(() => {
@@ -43,7 +75,6 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
             const veterinariosFiltrados = veterinarios.filter(veterinario =>
                 veterinario.nombre_completo.toLowerCase().includes(searchTermVeterinario.toLowerCase())
             );
-            console.log("Veterinarios filtrados:", veterinariosFiltrados); // Verificación de veterinarios filtrados
             setFilteredVeterinarios(veterinariosFiltrados);
         } else {
             setFilteredVeterinarios([]);
@@ -55,20 +86,6 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
             ...citaData,
             [e.target.name]: e.target.value,
         });
-        console.log(`Campo ${e.target.name} actualizado:`, e.target.value);
-    };
-
-    const handleSelectDueno = (dueno) => {
-        setCitaData({
-            ...citaData,
-            duenoId: dueno.id_usuario,
-            telefono: dueno.telefono || '',
-            email: dueno.email || ''
-        });
-        setSearchTerm(dueno.nombre_completo);
-        setFilteredDuenos([]);
-        setMascota(dueno.mascota || []);
-        console.log("Dueño seleccionado:", dueno);
     };
 
     const handleSelectMascota = (mascota) => {
@@ -77,40 +94,34 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
             mascotaId: mascota.id_mascota || ""
         });
         setIsMascotaOpen(false);
-        console.log("Mascota seleccionada:", mascota);
     };
 
     const handleSelectVeterinario = (veterinario) => {
         setCitaData({
             ...citaData,
-            id_veterinario: veterinario.id_usuario,  // Guardamos el ID del veterinario seleccionado
+            id_veterinario: veterinario.id_usuario,
         });
-        setSearchTermVeterinario(veterinario.nombre_completo);  // Actualizamos el término de búsqueda con el nombre del veterinario
-        setFilteredVeterinarios([]);  // Limpiamos los resultados filtrados
-        console.log("Veterinario seleccionado:", veterinario);  // Mostramos el veterinario seleccionado en consola
+        setSearchTermVeterinario(veterinario.nombre_completo);
+        setFilteredVeterinarios([]);
     };
-    
 
     // Manejar el envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
         try {
             Inertia.post('/citas', {
-                ...citaData,  // Datos de la mascota
+                ...citaData,
             });
         } catch (error) {
             console.error('Error al enviar los datos:', error);
-            alert('Hubo un error al agregar la mascota');
+            alert('Hubo un error al agregar la cita');
         }
-        console.log('Datos enviados:', { citaData });
         alert('¡Cita agregada exitosamente!');
     };
-    
 
     const handleCancel = () => {
-        if (onClose) onClose(); // Ejecuta onClose cuando se cancela el formulario
+        if (onClose) onClose();
     };
-
     return (
         <div className="modal-overlay citas-modal">
             <div className="modal-content">
@@ -125,17 +136,27 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
                         <div className="autocomplete">
                             <input
                                 type="text"
-                                name="searchTerm"
+                                name="dueno"
                                 placeholder="Escribe el nombre del dueño"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)} 
+                                value={citaData.dueno || searchTerm}  // Muestra el nombre completo si ya está en citaData, sino muestra searchTerm
+                                onChange={(e) => {
+                                    if (user && user.tipo_usuario !== "dueño") {
+                                        setSearchTerm(e.target.value);  // Permite filtrar la lista solo si el usuario no es dueño
+                                        setCitaData({
+                                            ...citaData,
+                                            dueno: e.target.value,  // Actualiza el nombre del dueño si está escribiendo
+                                        });
+                                    }
+                                }}
+                                onFocus={() => setFilteredDuenos(duenos)}  // Activa la búsqueda solo cuando el usuario está interactuando con el input
+                                disabled={user && user.tipo_usuario === "dueño"}  // Bloquea la edición si el usuario es dueño
                             />
                             {searchTerm && filteredDuenos.length > 0 && (
                                 <ul className="autocomplete-results">
                                     {filteredDuenos.map((dueno) => (
                                         <li
                                             key={dueno.id_usuario}
-                                            onClick={() => handleSelectDueno(dueno)}
+                                            onClick={() => handleSelectDueno(dueno)}  // Cuando se selecciona un dueño, se asigna a citaData.dueno
                                         >
                                             {dueno.nombre_completo}
                                         </li>
@@ -150,6 +171,7 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
                             name="telefono" 
                             value={citaData.telefono || ''} 
                             onChange={handleChange} 
+                            disabled
                         />
                         <label>Correo:</label>
                         <input 
@@ -157,6 +179,7 @@ export default function AgregarCita({ duenos, veterinarios, onClose }) {
                             name="email" 
                             value={citaData.email || ''} 
                             onChange={handleChange} 
+                            disabled
                         />
                     </div>
 

@@ -13,42 +13,54 @@ class CitasController extends Controller
 {
     public function index()
     {
-        $citas = Cita::select('id_cita', 'fecha', 'hora', 'motivo')
-                      ->orderBy('fecha', 'desc')
-                      ->orderBy('hora', 'desc')
-                      ->get();
-    
         $user = Auth::user();
     
+        // Filtrar las citas según el tipo de usuario
+        if ($user->tipo_usuario === 'dueño') {
+            // Si el usuario es dueño, filtrar las citas solo de sus mascotas
+            $citas = Cita::with('mascota') // Asegúrate de cargar la relación mascota
+                           ->whereHas('mascota', function ($query) use ($user) {
+                               $query->where('id_usuario', $user->id_usuario);
+                           })
+                           ->orderBy('fecha', 'desc')
+                           ->orderBy('hora', 'desc')
+                           ->get();
+        } else {
+            // Si el usuario no es dueño, obtener todas las citas
+            $citas = Cita::orderBy('fecha', 'desc')
+                           ->orderBy('hora', 'desc')
+                           ->get();
+        }
+        
         // Obtiene los usuarios con tipo_usuario "dueño" y sus mascotas asociadas
         $duenos = Usuario::select(
-                     'id_usuario',
-                     'telefono',
-                     'email',
-                     \DB::raw('CONCAT(nombre, " ", apellidos) AS nombre_completo')
-                 )
-                 ->where('tipo_usuario', 'dueño')
-                 ->with('mascota')  // Cargar las mascotas asociadas al dueño
-                 ->get();
-    
-        // Obtiene los usuarios con tipo_usuario "veterinario"
-        $veterinarios = Usuario::select(
                           'id_usuario',
                           'telefono',
                           'email',
                           \DB::raw('CONCAT(nombre, " ", apellidos) AS nombre_completo')
                       )
-                      ->where('tipo_usuario', 'veterinario')
+                      ->where('tipo_usuario', 'dueño')
+                      ->with('mascota')  // Cargar las mascotas asociadas al dueño
                       ->get();
     
+        // Obtiene los usuarios con tipo_usuario "veterinario"
+        $veterinarios = Usuario::select(
+                               'id_usuario',
+                               'telefono',
+                               'email',
+                               \DB::raw('CONCAT(nombre, " ", apellidos) AS nombre_completo')
+                           )
+                           ->where('tipo_usuario', 'veterinario')
+                           ->get();
+        
         return Inertia::render('Citas', [
             'citas' => $citas,
             'user' => $user,
             'duenos' => $duenos,
-            'veterinarios' => $veterinarios,  // Pasamos los veterinarios también
+            'veterinarios' => $veterinarios,
         ]);
     }
-
+    
     public function store(Request $request)
     {
         // Validar los datos de la solicitud
@@ -71,9 +83,9 @@ class CitasController extends Controller
                         ->first();
     
         if (!$dueno) {
-            return Inertia::render('Citas', [
+            return response()->json([
                 'error' => 'No se encontró un dueño con el ID proporcionado',
-            ]);
+            ], 404);
         }
     
         // Verificar que el veterinario existe
@@ -82,9 +94,9 @@ class CitasController extends Controller
                               ->first();
     
         if (!$veterinario) {
-            return Inertia::render('Citas', [
+            return response()->json([
                 'error' => 'No se encontró un veterinario con el ID proporcionado',
-            ]);
+            ], 404);
         }
     
         // Verificar si ya existe una cita en la misma fecha y hora
@@ -93,9 +105,9 @@ class CitasController extends Controller
                             ->first();
     
         if ($existingCita) {
-            return Inertia::render('Citas', [
+            return response()->json([
                 'error' => 'Ya existe una cita en esa fecha y hora',
-            ]);
+            ], 400);
         }
     
         // Crear la nueva cita
@@ -104,10 +116,12 @@ class CitasController extends Controller
             'hora' => $request->hora,
             'motivo' => $request->motivo,
             'id_veterinario' => $veterinario->id_usuario,
-            'id_dueno' => $dueno->id_usuario,
             'id_mascota' => $request->mascotaId, // Guardar el ID de la mascota si se proporciona
         ]);
+        
+        // Puedes retornar la nueva cita o una respuesta exitosa aquí
+        return response()->json([
+            'cita' => $cita
+        ]);
     }
-    
-
 }

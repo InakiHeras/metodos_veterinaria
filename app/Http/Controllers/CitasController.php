@@ -127,13 +127,19 @@ class CitasController extends Controller
         return response()->json(['error' => 'Cita no encontrada'], 404);
     }
 
+
     public function destroy($id)
-{
-    $cita = Cita::findOrFail($id);
-    $cita->delete();
-
-    return response()->json(['message' => 'Cita eliminada con éxito']);
-}
-
+    {
+        // Eliminar la cita
+        $cita = Cita::findOrFail($id);
+        $cita->delete();
+    
+        // Redirigir a la vista de citas con un mensaje de éxito
+        return Inertia::render('Citas/Index', [
+            'message' => 'Cita eliminada con éxito', // El mensaje de éxito
+            'citas' => Cita::all(), // Recalcular y pasar las citas restantes
+        ]);
+    }
+    
     
 }

@@ -122,6 +122,7 @@ export default function AgregarCita({ duenos, veterinarios, onClose, user }) {
     const handleCancel = () => {
         if (onClose) onClose();
     };
+
     return (
         <div className="modal-overlay citas-modal">
             <div className="modal-content">

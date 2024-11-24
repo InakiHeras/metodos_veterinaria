@@ -52,7 +52,6 @@ export default function Citas() {
             deleteCita(route('citas.destroy', idCita), {
                 onSuccess: () => {
                     alert("Cita eliminada exitosamente.");
-                    // Aquí podrías hacer alguna actualización para reflejar los cambios en la UI, si es necesario.
                 },
                 onError: () => {
                     alert("Hubo un error al eliminar la cita.");
@@ -73,6 +72,7 @@ export default function Citas() {
                     <table className="citas-table">
                         <thead>
                             <tr>
+                                <th>ID Cita</th> {/* Nueva columna para el ID de la cita */}
                                 <th>Fecha</th>
                                 <th>Hora</th>
                                 <th>Motivo</th>
@@ -82,6 +82,7 @@ export default function Citas() {
                         <tbody>
                             {filteredCitas.map((cita) => (
                                 <tr key={cita.id_cita}>
+                                    <td>{cita.id_cita}</td> {/* Mostrar el ID de la cita */}
                                     <td>{cita.fecha}</td>
                                     <td>{cita.hora}</td>
                                     <td>{cita.motivo}</td>
@@ -132,4 +133,3 @@ export default function Citas() {
         </Base>
     );
 }
-

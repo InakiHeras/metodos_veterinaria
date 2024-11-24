@@ -45,19 +45,25 @@ export default function ReagendarCita({ citaSeleccionada, duenos, veterinarios, 
             [e.target.name]: e.target.value,
         });
     };
-
-    // Enviar datos al backend y actualizar la cita seleccionada
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Actualizar la cita localmente antes de enviar
+    
+        // Registrar las fechas originales y las nuevas
+        console.log('Fecha original:', citaSeleccionada.fecha);
+        console.log('Hora original:', citaSeleccionada.hora);
+        console.log('Fecha nueva:', citaData.fecha);
+        console.log('Hora nueva:', citaData.hora);
+    
+        // Actualizar la cita localmente antes de enviarla
         const updatedCita = { ...citaSeleccionada, fecha: citaData.fecha, hora: citaData.hora };
-
+    
         // Enviar los datos al backend
         Inertia.post('/citas/reagendar', updatedCita);
-
+    
         // Cerrar el modal
         onClose();
     };
+    
 
     // Cancelar y cerrar modal
     const handleCancel = () => {

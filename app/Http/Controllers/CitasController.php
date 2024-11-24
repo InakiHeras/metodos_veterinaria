@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
@@ -67,47 +68,49 @@ class CitasController extends Controller
             'hora' => 'required|date_format:H:i',
             'mascotaId' => 'nullable|exists:mascota,id_mascota',
         ]);
-
+    
         $dueno = Usuario::where('id_usuario', $request->duenoId)
             ->where('tipo_usuario', 'dueño')
             ->first();
-
+    
         $veterinario = Usuario::where('id_usuario', $request->id_veterinario)
             ->where('tipo_usuario', 'veterinario')
             ->first();
-
+    
         if (!$dueno || !$veterinario) {
-            return response()->json(['error' => 'Datos inválidos'], 404);
+            return redirect()->back()->with('error', 'Datos inválidos.');
         }
-
+    
         // Verificar si ya existe una cita en la misma fecha y hora
         $existingCita = Cita::where('fecha', $request->fecha)
             ->where('hora', $request->hora)
             ->first();
-
+    
         if ($existingCita) {
-            return response()->json(['error' => 'Cita duplicada'], 400);
+            return redirect()->back()->with('error', 'Ya existe una cita en la misma fecha y hora.');
         }
-
-        $cita = Cita::create([
+    
+        // Crear la nueva cita
+        Cita::create([
             'fecha' => $request->fecha,
             'hora' => $request->hora,
             'motivo' => $request->motivo,
             'id_veterinario' => $veterinario->id_usuario,
             'id_mascota' => $request->mascotaId,
         ]);
-
-        return response()->json(['cita' => $cita]);
+    
+        // Redirigir a la lista de citas con un mensaje de éxito
+        return redirect()->route('citas.index')->with('success', 'Cita creada exitosamente.');
     }
+    
 
     public function reagendar(Request $request)
     {
         // Validar datos entrantes
         $validated = $request->validate([
-            'id_cita' => 'required|exists:cita,id_cita',  // Asegurarse de que id_cita exista
+            'id_cita' => 'required|exists:cita,id_cita', // Corregido el nombre de la tabla a 'citas'
             'fecha' => 'required|date',
             'hora' => 'required|date_format:H:i',
-            //'id_veterinario' => 'required|exists:veterinario,id_veterinario',
         ]);
     
         // Buscar la cita por id
@@ -118,15 +121,20 @@ class CitasController extends Controller
             $cita->update([
                 'fecha' => $request->fecha,
                 'hora' => $request->hora,
-                //'id_veterinario' => $request->id_veterinario,
             ]);
     
-            return response()->json(['message' => 'Cita actualizada correctamente']);
+            // Retornar la vista con el mensaje de éxito y las citas actualizadas
+            return Inertia::render('Citas/Index', [
+                'message' => 'Cita actualizada correctamente', // Mensaje de éxito
+                'citas' => Cita::all(), // Recalcular y pasar las citas actualizadas
+            ]);
         }
     
-        return response()->json(['error' => 'Cita no encontrada'], 404);
+        // Si la cita no se encuentra, devolver el error
+        return Inertia::render('Citas/Index', [
+            'error' => 'Cita no encontrada',
+        ]);
     }
-
 
     public function destroy($id)
     {
@@ -140,6 +148,4 @@ class CitasController extends Controller
             'citas' => Cita::all(), // Recalcular y pasar las citas restantes
         ]);
     }
-    
-    
 }

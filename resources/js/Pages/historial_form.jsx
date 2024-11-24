@@ -1,22 +1,54 @@
 import React, { useState } from "react";
 import Base from "./Base";
-import "../../css/inicio.css"; // Importar estilos generales
+import "../../css/inicio.css";
+
+// Componente hijo para entradas de recetas
+const RecetaInput = ({ receta, index, onChange, onRemove }) => (
+    <div className="flex items-center gap-2 mb-2">
+        <input
+            type="text"
+            value={receta.nombre_medicamento}
+            onChange={(e) => onChange(index, "nombre_medicamento", e.target.value)}
+            placeholder="Medicamento"
+            className="border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-pink-300 w-1/3"
+        />
+        <input
+            type="text"
+            value={receta.dosis}
+            onChange={(e) => onChange(index, "dosis", e.target.value)}
+            placeholder="Dosis"
+            className="border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-pink-300 w-1/4"
+        />
+        <input
+            type="text"
+            value={receta.tiempo}
+            onChange={(e) => onChange(index, "tiempo", e.target.value)}
+            placeholder="Tiempo"
+            className="border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-pink-300 w-1/4"
+        />
+        <button
+            onClick={() => onRemove(index)}
+            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+        >
+            X
+        </button>
+    </div>
+);
 
 export default function HistorialForm({ historial, setHistorial }) {
-    const [formData, setFormData] = useState({
+    const initialFormData = {
+        id: "",
         fecha: "",
         medico: "",
         cliente: "",
         mascota: "",
         razon: "",
         diagnostico: "",
-        recetas: [{ nombre_medicamento: "" }], // Campo de recetas con un solo campo vacío por defecto
-    });
+        recetas: [{ nombre_medicamento: "", dosis: "", tiempo: "" }],
+    };
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [formData, setFormData] = useState(initialFormData);
 
-    // Manejar el cambio de los campos del formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -25,25 +57,22 @@ export default function HistorialForm({ historial, setHistorial }) {
         });
     };
 
-    // Manejar el cambio en las recetas
-    const handleRecetaChange = (index, e) => {
+    const handleRecetaChange = (index, field, value) => {
         const newRecetas = [...formData.recetas];
-        newRecetas[index].nombre_medicamento = e.target.value;
+        newRecetas[index][field] = value;
         setFormData({
             ...formData,
             recetas: newRecetas,
         });
     };
 
-    // Agregar una receta más
     const addReceta = () => {
         setFormData({
             ...formData,
-            recetas: [...formData.recetas, { nombre_medicamento: "" }],
+            recetas: [...formData.recetas, { nombre_medicamento: "", dosis: "", tiempo: "" }],
         });
     };
 
-    // Eliminar una receta
     const removeReceta = (index) => {
         const newRecetas = formData.recetas.filter((_, i) => i !== index);
         setFormData({
@@ -52,148 +81,179 @@ export default function HistorialForm({ historial, setHistorial }) {
         });
     };
 
-    // Función para guardar el formulario y actualizar el historial
+    const isFormValid = () => {
+        const { id, fecha, medico, cliente, mascota, recetas } = formData;
+        if (!id || !fecha || !medico || !cliente || !mascota) return false;
+        return recetas.every(
+            (receta) =>
+                receta.nombre_medicamento.trim() &&
+                receta.dosis.trim() &&
+                receta.tiempo.trim()
+        );
+    };
+
+    const resetForm = () => setFormData(initialFormData);
+
     const handleSave = () => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            // Validar datos antes de guardar
-            if (!formData.fecha || !formData.medico || !formData.cliente || !formData.mascota) {
-                throw new Error("Por favor, completa todos los campos obligatorios.");
-            }
-
-            // Actualizar el historial con los nuevos datos
-            setHistorial((prevHistorial) => [
-                ...prevHistorial,
-                { ...formData, id: prevHistorial.length + 1 }, // Agregar un ID único
-            ]);
-
-            alert("Formulario guardado exitosamente");
-
-            // Reiniciar el formulario
-            setFormData({
-                fecha: "",
-                medico: "",
-                cliente: "",
-                mascota: "",
-                razon: "",
-                diagnostico: "",
-                recetas: [{ nombre_medicamento: "" }],
-            });
-        } catch (err) {
-            console.error(err);
-            setError(err.message || "Hubo un problema al guardar los datos.");
-        } finally {
-            setLoading(false);
+        if (!isFormValid()) {
+            alert("Por favor, completa todos los campos obligatorios.");
+            return;
         }
+        const newHistorial = { ...formData, id: Date.now() }; // Generar ID único
+        setHistorial((prev) => [...prev, newHistorial]);
+        alert("Formulario guardado exitosamente");
+        resetForm();
     };
 
     return (
         <Base>
-            <div className="container mx-auto p-6">
-                <h1 className="text-center text-2xl font-bold mb-6">Formulario de Historial</h1>
+            <div
+                className="flex items-center justify-center min-h-screen"
+                style={{
+                    backgroundColor: "#f3f4f6",
+                    padding: "20px",
+                }}
+            >
+                <div
+                    className="rounded-lg shadow-lg"
+                    style={{
+                        width: "90vw",
+                        maxWidth: "1200px",
+                        minHeight: "85vh",
+                        backgroundImage: "url('/assets/formulario.png')",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        position: "relative",
+                        transform: "translateX(10%)",
+                    }}
+                >
+                    <div
+                        className="text-center text-white font-bold text-3xl py-4"
+                        style={{
+                            backgroundColor: "#d91e70",
+                            borderTopLeftRadius: "8px",
+                            borderTopRightRadius: "8px",
+                        }}
+                    >
+                        Receta Médica
+                    </div>
 
-                {error && <div className="text-red-500 mb-4">{error}</div>}
-                {loading && <div className="text-gray-500 mb-4">Guardando...</div>}
-
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                    {/* Campos del formulario en dos columnas */}
-                    <input
-                        type="date"
-                        name="fecha"
-                        value={formData.fecha}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                    <input
-                        type="text"
-                        name="medico"
-                        placeholder="Médico"
-                        value={formData.medico}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                    <input
-                        type="text"
-                        name="cliente"
-                        placeholder="Cliente"
-                        value={formData.cliente}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                    <input
-                        type="text"
-                        name="mascota"
-                        placeholder="Mascota"
-                        value={formData.mascota}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                    <input
-                        type="text"
-                        name="razon"
-                        placeholder="Razón"
-                        value={formData.razon}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                    <input
-                        type="text"
-                        name="diagnostico"
-                        placeholder="Diagnóstico"
-                        value={formData.diagnostico}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border rounded"
-                    />
-                </div>
-
-                <div className="space-y-4 mb-4">
-                    {formData.recetas.map((receta, index) => (
-                        <div key={index} className="flex items-center">
-                            <input
-                                type="text"
-                                name={`receta-${index}`}
-                                value={receta.nombre_medicamento}
-                                onChange={(e) => handleRecetaChange(index, e)}
-                                placeholder="Nombre de medicamento"
-                                className="w-full px-4 py-2 border rounded mr-2"
-                            />
-                            <button
-                                onClick={() => removeReceta(index)}
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                            >
-                                Eliminar receta
-                            </button>
+                    <div className="p-8">
+                        {/* Fila ID y Fecha */}
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="flex flex-col">
+                                <label htmlFor="id" className="font-semibold mb-1 text-gray-700">
+                                    ID
+                                </label>
+                                <input
+                                    id="id"
+                                    type="text"
+                                    name="id"
+                                    value={formData.id}
+                                    onChange={handleChange}
+                                    placeholder="ID único"
+                                    className="border rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-pink-300"
+                                />
+                            </div>
+                            <div className="flex flex-col items-end">
+                                <label htmlFor="fecha" className="font-semibold mb-1 text-gray-700">
+                                    Fecha
+                                </label>
+                                <input
+                                    id="fecha"
+                                    type="date"
+                                    name="fecha"
+                                    value={formData.fecha}
+                                    onChange={handleChange}
+                                    className="border rounded px-2 py-1 w-2/3 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                                />
+                            </div>
                         </div>
-                    ))}
-                    <button
-                        onClick={addReceta}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    >
-                        Agregar receta
-                    </button>
-                </div>
 
-                {/* Botones Guardar y Cancelar */}
-                <div className="flex justify-end mt-4 space-x-4">
-                    <button
-                        onClick={handleSave}
-                        className={`px-4 py-2 rounded ${
-                            loading
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-green-500 text-white hover:bg-green-600"
-                        }`}
-                        disabled={loading}
-                    >
-                        Guardar
-                    </button>
-                    <a
-                        href="/historial"
-                        className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
-                    >
-                        Cancelar
-                    </a>
+                        {/* Fila Médico */}
+                        <div className="flex flex-col items-center mb-6">
+                            <label htmlFor="medico" className="font-semibold mb-1 text-gray-700 text-center">
+                                Médico
+                            </label>
+                            <input
+                                id="medico"
+                                type="text"
+                                name="medico"
+                                value={formData.medico}
+                                onChange={handleChange}
+                                placeholder="Nombre del médico"
+                                className="border rounded px-2 py-1 w-2/3 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                            />
+                        </div>
+
+                        {/* Fila Mascota y Diagnóstico */}
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="flex flex-col">
+                                <label htmlFor="mascota" className="font-semibold mb-1 text-gray-700">
+                                    Mascota
+                                </label>
+                                <input
+                                    id="mascota"
+                                    type="text"
+                                    name="mascota"
+                                    value={formData.mascota}
+                                    onChange={handleChange}
+                                    placeholder="Nombre de la mascota"
+                                    className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 w-full mb-4"
+                                />
+                                <label htmlFor="diagnostico" className="font-semibold mb-1 text-gray-700">
+                                    Diagnóstico
+                                </label>
+                                <textarea
+                                    id="diagnostico"
+                                    name="diagnostico"
+                                    value={formData.diagnostico}
+                                    onChange={handleChange}
+                                    placeholder="Descripción del diagnóstico"
+                                    rows="5"
+                                    className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 w-full"
+                                />
+                            </div>
+
+                            {/* Campos de Medicamento */}
+                            <div className="flex flex-col">
+                                <label className="font-semibold mb-1 text-gray-700">Medicamentos</label>
+                                <div className="space-y-2">
+                                    {formData.recetas.map((receta, index) => (
+                                        <RecetaInput
+                                            key={index}
+                                            receta={receta}
+                                            index={index}
+                                            onChange={handleRecetaChange}
+                                            onRemove={removeReceta}
+                                        />
+                                    ))}
+                                </div>
+                                <button
+                                    onClick={addReceta}
+                                    className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                >
+                                    Agregar Medicamento
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Botones */}
+                        <div className="flex justify-end gap-4">
+                            <button
+                                onClick={handleSave}
+                                className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600"
+                            >
+                                Guardar
+                            </button>
+                            <a
+                                href="/historial"
+                                className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                            >
+                                Cancelar
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </Base>

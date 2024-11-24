@@ -2,15 +2,20 @@ import { useState, useEffect } from 'react';
 import Base from './Base';
 import '../../css/add_mascotas.css';
 import { Inertia } from '@inertiajs/inertia';
+import { usePage } from '@inertiajs/react';
 
-export default function AddMascota() {
+export default function FormDueño() {
+
+    const { usuario_mascota } = usePage().props;
+    console.log(usuario_mascota);
+
     // Estado para los datos del usuario
-    const [userData, setUserData] = useState({
+    /*const [userData, setUserData] = useState({
         nombre: '',
         correo: '',
         telefono: '',
         direccion: '',
-    });
+    });*/
 
     // Estado para los datos de la mascota
     const [petData, setPetData] = useState({
@@ -33,10 +38,10 @@ export default function AddMascota() {
         setPetData({ ...petData, [name]: value });
     };
 
-    const handleUserChange = (e) => {
+    /*const handleUserChange = (e) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
-    };
+    };*/
 
     // Manejar el envío del formulario
     const handleSubmit = (e) => {
@@ -50,7 +55,7 @@ export default function AddMascota() {
             console.error('Error al enviar los datos:', error);
             alert('Hubo un error al agregar la mascota');
         }
-        console.log('Datos enviados:', { userData, petData });
+        console.log('Datos enviados:', { petData });
         alert('¡Mascota agregada exitosamente!');
     };
 
@@ -71,10 +76,17 @@ export default function AddMascota() {
                                 <input
                                     type="text"
                                     name="nombre"
-                                    value={userData.nombre}
-                                    onChange={handleUserChange}
+                                    value={usuario_mascota[0].nombre}
                                     className="w-full mt-1 p-2 rounded-lg bg-pink-200"
-                                    placeholder="Nombre"
+                                />
+                            </div>
+                            <div>
+                                <label className="block font-medium">Apellido:</label>
+                                <input
+                                    type="text"
+                                    name="apellido"
+                                    value={usuario_mascota[0].apellidos}
+                                    className="w-full mt-1 p-2 rounded-lg bg-pink-200"
                                 />
                             </div>
                             <div>
@@ -82,10 +94,8 @@ export default function AddMascota() {
                                 <input
                                     type="email"
                                     name="correo"
-                                    value={userData.correo}
-                                    onChange={handleUserChange}
+                                    value={usuario_mascota[0].email}
                                     className="w-full mt-1 p-2 rounded-lg bg-pink-200"
-                                    placeholder="Email"
                                 />
                             </div>
                             <div>
@@ -93,21 +103,8 @@ export default function AddMascota() {
                                 <input
                                     type="number"
                                     name="telefono"
-                                    value={userData.telefono}
-                                    onChange={handleUserChange}
+                                    value={usuario_mascota[0].telefono}
                                     className="w-full mt-1 p-2 rounded-lg bg-pink-200"
-                                    placeholder="Teléfono"
-                                />
-                            </div>
-                            <div>
-                                <label className="block font-medium">Dirección:</label>
-                                <input
-                                    type="text"
-                                    name="direccion"
-                                    value={userData.direccion}
-                                    onChange={handleUserChange}
-                                    className="w-full mt-1 p-2 rounded-lg bg-pink-200"
-                                    placeholder="Teléfono"
                                 />
                             </div>
                         </div>

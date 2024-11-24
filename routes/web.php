@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/historial', [HistorialController::class, 'index'])->name('historial');
 });
 
+Route::middleware('auth')->group(function () {
+    // Ruta para mostrar el formulario de dueño
+    Route::get('/FormDueño', [UserController::class, 'showForm'])->name('FormDueño');
+});
 
 
 require __DIR__.'/auth.php';

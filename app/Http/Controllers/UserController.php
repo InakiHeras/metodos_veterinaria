@@ -19,7 +19,7 @@ class UserController extends Controller
         //$userName = $user-›nombre; // Obtener el nombre del usuario
         //$userRole = $user->getRoleNames()->first();
 
-        $usuario_mascota = Usuario::select('usuarios.id_usuario', 'mascota.nombre as mascota', 'usuarios.nombre', 'usuarios.email', 'usuarios.telefono')
+        $usuario_mascota = Usuario::select('usuarios.id_usuario', 'mascota.nombre as mascota', 'usuarios.nombre', 'usuarios.email', 'usuarios.telefono', 'usuarios.tipo_usuario')
         ->join('mascota', 'usuarios.id_usuario','=','mascota.id_usuario')->where('usuarios.id_usuario', $user->id_usuario)->get();
 
         return Inertia::render('inicio_add_mascota', ['usuario_mascota' => $usuario_mascota]);
@@ -57,4 +57,29 @@ class UserController extends Controller
     {
         //
     }
+
+    // Método para cargar el formulario de los datos del dueño
+    public function showForm()
+    {
+        /*$user = Auth::user(); // Obtener el usuario autenticado
+
+        // Verificar si el usuario tiene el rol de 'dueño'
+        if ($user->hasRole('dueño')) {
+            // Si el rol es 'dueño', cargar los datos del usuario
+            return Inertia::render('FormDueño', ['usuario' => $user]);
+        }
+
+        // Si el usuario no tiene el rol de dueño, redirigir a alguna página
+        return redirect()->route('inicio');*/
+
+        $user = Usuario::find(Auth::id());
+        //$userName = $user-›nombre; // Obtener el nombre del usuario
+        //$userRole = $user->getRoleNames()->first();
+
+        $usuario_mascota = Usuario::select('usuarios.id_usuario', 'mascota.nombre as mascota', 'usuarios.nombre', 'usuarios.apellidos', 'usuarios.email', 'usuarios.telefono', 'usuarios.tipo_usuario')
+        ->join('mascota', 'usuarios.id_usuario','=','mascota.id_usuario')->where('usuarios.id_usuario', $user->id_usuario)->get();
+
+        return Inertia::render('FormDueño', ['usuario_mascota' => $usuario_mascota]);
+    }
+
 }

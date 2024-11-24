@@ -8,11 +8,13 @@ export default function ListaMascotas() {
     const { usuario_mascota } = usePage().props;
     console.log(usuario_mascota);
 
+    const tipo_usuario = usuario_mascota.tipo_usuario;
+
 
     return (
         <Base>
             <div className="inicio_add_mascotas">
-                <main className="w-full max-w-6xl p-8 bg-white rounded-lg shadow-lg mt-8">
+                <main className="w-full max-w-6xl p-8 bg-transparent rounded-lg shadow-none mt-8">
                     <h1 className="text-3xl font-bold text-center text-pink-600 mb-6">Lista de Mascotas</h1>
 
                     <table className="w-full bg-pink-100 rounded-lg shadow-md overflow-hidden">
@@ -42,11 +44,28 @@ export default function ListaMascotas() {
                     </table>
 
                     {/* Botón de agregar */}
-                    <div className="flex justify-center mt-8">
-                        <button onClick={() => window.location.assign('/add_mascota')} className="bg-pink-500 text-white px-6 py-3 rounded-full shadow-md hover:bg-pink-600 transition">
-                            Agregar Mascota
-                        </button>
-                    </div>
+                    {tipo_usuario === "dueño" ? (
+                        <div className="flex justify-center mt-8">
+                            {/* Botón de agregar */}
+                            <button
+                                onClick={() => window.location.assign('/add_mascota')}
+                                className="bg-pink-500 text-white px-6 py-3 rounded-full shadow-md hover:bg-pink-600 transition"
+                            >
+                                Agregar Mascota
+                            </button>
+                        </div>
+                    ) :
+                    (
+                        <div className="flex justify-center mt-8">
+                            {/* Botón de agregar */}
+                            <button
+                                onClick={() => window.location.assign('/FormDueño')}
+                                className="bg-pink-500 text-white px-6 py-3 rounded-full shadow-md hover:bg-pink-600 transition"
+                            >
+                                Agregar Mascota
+                            </button>
+                        </div>
+                    )}
                 </main>
             </div>
         </Base>

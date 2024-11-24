@@ -57,7 +57,7 @@ export default function AddMascota() {
     return (
         <Base>
         <div className="add_mascotas">
-            <main className="w-full max-w-6xl p-8 bg-transparent rounded-lg shadow-none mt-8">
+            <main className="w-full max-w-6xl p-0 bg-transparent rounded-lg shadow-none mt-0">
                 <h1 className="text-3xl font-bold text-center text-pink-600">Agregar Nueva Mascota</h1>
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-6">

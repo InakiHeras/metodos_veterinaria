@@ -82,4 +82,13 @@ class UserController extends Controller
         return Inertia::render('FormDueño', ['usuario_mascota' => $usuario_mascota]);
     }
 
+    public function findByEmail(Request $request)
+    {
+
+        // Buscar el usuario por correo
+        $user = Usuario::select('id_usuario')->where('email', $request->email)->first();
+
+        return response()->json(['id_usuario' => $user->id_usuario], 200);
+    }
+
 }

@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 import Base from './Base';
 import '../../css/add_mascotas.css';
 import { Inertia } from '@inertiajs/inertia';
+import { usePage } from '@inertiajs/react';
+import axios from 'axios';
 
 export default function AddMascota() {
+
     // Estado para los datos del usuario
     const [userData, setUserData] = useState({
         nombre: '',
+        apellidos: '',
         correo: '',
         telefono: '',
-        direccion: '',
     });
 
     // Estado para los datos de la mascota
@@ -38,13 +41,40 @@ export default function AddMascota() {
         setUserData({ ...userData, [name]: value });
     };
 
+    const fetchUserIdByEmail = async (email) => {
+        try {
+            console.log(email);
+            const response = await axios.post('/usuarios/buscar', { email });
+            console.log(response.data);
+
+            if (response.data?.id_usuario) {
+                return response.data.id_usuario;
+            } else {
+                throw new Error('No se encontró el usuario');
+            }
+        } catch (error) {
+            console.error('Error al buscar el ID del usuario:', error);
+            alert('No se pudo encontrar un usuario con ese correo.');
+            return null;
+        }
+    };
+
     // Manejar el envío del formulario
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         try {
-            Inertia.post('/mascotas', {
+            // Buscar el ID del usuario usando el correo
+            console.log(userData.correo);
+            const id_usuario = await fetchUserIdByEmail(userData.correo);
+
+            if (!id_usuario) {
+                alert('No se pudo encontrar un usuario con ese correo.');
+                return;
+            }
+
+            Inertia.post('/mascotas_2', {
                 ...petData,  // Datos de la mascota
-                userId,  // ID del dueño
+                id_usuario,  // ID del dueño
             });
         } catch (error) {
             console.error('Error al enviar los datos:', error);
@@ -78,6 +108,17 @@ export default function AddMascota() {
                                 />
                             </div>
                             <div>
+                                <label className="block font-medium">Apellidos:</label>
+                                <input
+                                    type="text"
+                                    name="apellidos"
+                                    value={userData.apellidos}
+                                    onChange={handleUserChange}
+                                    className="w-full mt-1 p-2 rounded-lg bg-pink-200"
+                                    placeholder="Apellidos"
+                                />
+                            </div>
+                            <div>
                                 <label className="block font-medium">Correo:</label>
                                 <input
                                     type="email"
@@ -94,17 +135,6 @@ export default function AddMascota() {
                                     type="number"
                                     name="telefono"
                                     value={userData.telefono}
-                                    onChange={handleUserChange}
-                                    className="w-full mt-1 p-2 rounded-lg bg-pink-200"
-                                    placeholder="Teléfono"
-                                />
-                            </div>
-                            <div>
-                                <label className="block font-medium">Dirección:</label>
-                                <input
-                                    type="text"
-                                    name="direccion"
-                                    value={userData.direccion}
                                     onChange={handleUserChange}
                                     className="w-full mt-1 p-2 rounded-lg bg-pink-200"
                                     placeholder="Teléfono"

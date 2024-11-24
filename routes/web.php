@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('/mascotas', [PetController::class, 'store']);
+    Route::post('/mascotas_2', [PetController::class, 'store_2']);
+
+    Route::post('/usuarios/buscar', [UserController::class, 'findByEmail']);
 
     Route::get('/usuarios/{id}', [UserController::class, 'show'])->name('usuarios.show');
 

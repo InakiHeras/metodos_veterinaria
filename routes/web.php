@@ -42,7 +42,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/inicio', [InicioController::class, 'index'])->name('inicio');
-    Route::get('/citas', [CitasController::class, 'index']);
+    Route::get('/citas', [CitasController::class, 'index'])->name('citas.index');
 
     Route::post('/citas', [CitasController::class, 'store']);
     Route::post('/citas/reagendar', [CitasController::class, 'reagendar']);

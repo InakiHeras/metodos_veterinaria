@@ -1,14 +1,69 @@
 import React, { useState } from 'react';
-import Base from './Base'; // Asegúrate de importar el componente Base
-import '../../css/Citas.css';
+import { usePage, useForm } from '@inertiajs/react';  // Asegúrate de importar useForm
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons';
+import AgregarCita from './AgregarCita'; // Componente para agregar una cita
+import ReagendarCita from './ReagendarCita'; // Componente para reagendar una cita
+import Base from './Base';
+import '../../css/Citas.css';
 
 export default function Citas() {
+    const { citas, duenos, veterinarios, user } = usePage().props; // Asegúrate de que user esté disponible
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCita, setSelectedCita] = useState(null); // Estado para la cita seleccionada
+    const [isReagendar, setIsReagendar] = useState(false); // Estado para saber si se va a reagendar o agregar una cita
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    // UseForm de Inertia.js para eliminar la cita
+    const { delete: deleteCita } = useForm();  // Usa el hook delete de Inertia.js
+
+    const openModal = (cita = null, reagendar = false) => {
+        let dueno = null;
+
+        if (cita && cita.mascota) {
+            // Busca al dueño de la mascota en la lista de dueños
+            dueno = duenos.find(d => d.id_usuario === cita.mascota.id_usuario);
+            console.log("ID del dueño de la mascota:", dueno ? dueno.id_usuario : "No encontrado");
+            console.log("Dueño de la mascota:", dueno ? dueno.nombre_completo : "No encontrado");
+        } else {
+            console.warn("La cita no tiene una mascota asociada.");
+        }
+
+        // Establece la cita seleccionada junto con el dueño
+        setSelectedCita({
+            ...cita,
+            dueno, // Agregar los datos del dueño
+        });
+
+        setIsReagendar(reagendar); // Establecer si es para reagendar
+        console.log("Cita seleccionada:", cita?.id_cita); // Log para ver el ID de la cita seleccionada
+        setIsModalOpen(true); // Abrir el modal
+    };
+
+    // Función para cerrar el modal y limpiar la cita seleccionada
+    const closeModal = () => {
+        setSelectedCita(null); // Limpiar la cita seleccionada
+        setIsReagendar(false); // Restablecer el estado de reagendar
+        setIsModalOpen(false); // Cerrar el modal
+    };
+
+    // Función para eliminar la cita
+    const eliminarCita = (idCita) => {
+        if (window.confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
+            deleteCita(route('citas.destroy', idCita), {
+                onSuccess: () => {
+                    alert("Cita eliminada exitosamente.");
+                },
+                onError: () => {
+                    alert("Hubo un error al eliminar la cita.");
+                }
+            });
+        }
+    };
+
+    // Filtrar las citas basadas en el tipo de usuario
+    const filteredCitas = user.tipo_usuario === 'dueño'
+        ? citas.filter(cita => cita.mascota && cita.mascota.id_usuario === user.id_usuario)
+        : citas;
 
     return (
         <Base>
@@ -17,7 +72,7 @@ export default function Citas() {
                     <table className="citas-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>ID Cita</th> {/* Nueva columna para el ID de la cita */}
                                 <th>Fecha</th>
                                 <th>Hora</th>
                                 <th>Motivo</th>
@@ -25,83 +80,55 @@ export default function Citas() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>0104SA</td>
-                                <td>28/octubre/2024</td>
-                                <td>2:00 pm</td>
-                                <td>Vacuna</td>
-                                <td>
-                                    <button className="action-btn reagendar-btn">
-                                        <FontAwesomeIcon icon={faSyncAlt} />
-                                    </button>
-                                    <button className="action-btn cancelar-btn">
-                                        <FontAwesomeIcon icon={faBan} />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>0105RE</td>
-                                <td>05/noviembre/2024</td>
-                                <td>5:00 pm</td>
-                                <td>Castración</td>
-                                <td>
-                                    <button className="action-btn reagendar-btn">
-                                        <FontAwesomeIcon icon={faSyncAlt} />
-                                    </button>
-                                    <button className="action-btn cancelar-btn">
-                                        <FontAwesomeIcon icon={faBan} />
-                                    </button>
-                                </td>
-                            </tr>
+                            {filteredCitas.map((cita) => (
+                                <tr key={cita.id_cita}>
+                                    <td>{cita.id_cita}</td> {/* Mostrar el ID de la cita */}
+                                    <td>{cita.fecha}</td>
+                                    <td>{cita.hora}</td>
+                                    <td>{cita.motivo}</td>
+                                    <td>
+                                        <button 
+                                            className="action-btn reagendar-btn"
+                                            onClick={() => openModal(cita, true)} // Pasar la cita seleccionada para reagendar
+                                        >
+                                            <FontAwesomeIcon icon={faSyncAlt} />
+                                        </button>
+                                        <button 
+                                            className="action-btn cancelar-btn"
+                                            onClick={() => eliminarCita(cita.id_cita)} // Llamar a la función de eliminar
+                                        >
+                                            <FontAwesomeIcon icon={faBan} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                     <button className="agendar-cita-btn" onClick={openModal}>Agendar cita</button>
                 </main>
 
+                <button className="action-btn agendar-cita-btn" onClick={() => openModal()}>Agendar cita</button>
+
+                {/* Mostrar el modal solo cuando se haya seleccionado una cita */}
                 {isModalOpen && (
-                    <div className="modal-overlay citas-modal">
-                        <div className="modal-content">
-                            <h2 className="modal-title">Registro de cita</h2>
-                            <form className="modal-form">
-                                <div className="form-row full-width">
-                                    <legend>Datos del dueño</legend>
-                                </div>
-                                <div className="form-row four-columns">
-                                    <label>Nombre:</label>
-                                    <input type="text" />
-                                    <label>Apellidos:</label>
-                                    <input type="text" />
-                                </div>
-                                <div className="form-row four-columns">
-                                    <label>Correo:</label>
-                                    <input type="email" />
-                                    <label>Teléfono:</label>
-                                    <input type="tel" />
-                                </div>
-                                <div className="form-row single-column">
-                                    <legend>Datos de la mascota</legend>
-                                </div>
-                                <div className="form-row two-columns">
-                                    <label>Mascota:</label>
-                                    <input type="text" name="mascota" />
-                                    <label>Motivo:</label>
-                                    <input type="text" name="motivo" />
-                                </div>
-                                <div className="form-row three-columns">
-                                    <label>Tipo/raza:</label>
-                                    <input type="text" />
-                                    <label>Fecha:</label>
-                                    <input type="date" />
-                                    <label>Hora:</label>
-                                    <input type="time" />
-                                </div>
-                                <div className="modal-buttons">
-                                    <button type="submit" className="save-btn">Guardar</button>
-                                    <button type="button" className="cancel-btn" onClick={closeModal}>Cancelar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    isReagendar ? (
+                        <ReagendarCita
+                            duenos={duenos.filter(dueno => dueno.id_usuario === selectedCita?.mascota?.id_usuario)}
+                            veterinarios={veterinarios}
+                            mascota={[selectedCita?.mascota]} // Solo pasa la mascota relacionada con la cita seleccionada
+                            user={user}
+                            citaSeleccionada={selectedCita}
+                            onClose={closeModal}
+                        />
+                    ) : (
+                        <AgregarCita
+                            duenos={duenos}
+                            veterinarios={veterinarios}
+                            mascota={duenos.filter(dueno => dueno.mascotas).flatMap(dueno => dueno.mascotas)}
+                            user={user}  
+                            onClose={closeModal}
+                        />
+                    )
                 )}
             </div>
         </Base>

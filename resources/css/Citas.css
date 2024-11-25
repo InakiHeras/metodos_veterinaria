@@ -132,8 +132,8 @@
     padding: 20px;
     border-radius: 40px;
     border: 2px solid #FB67C0;
-    width: 700px;
-    max-width: 90%;
+    width: 920px;
+    max-width: 100%;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -213,6 +213,7 @@
     background-color: #c5463c;
 }
 
+
 /* Estilo general de inputs */
 .modal-content input[type="text"],
 .modal-content input[type="date"],
@@ -220,7 +221,6 @@
 .modal-content input[type="email"],
 .modal-content input[type="tel"] {
     width: 100%;
-    max-width: 240px;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 20px;
@@ -230,27 +230,89 @@
     color: #333;
 }
 
-/* Centrar texto en los inputs de fecha y hora */
-.modal-content input[type="date"],
-.modal-content input[type="time"] {
+
+/* Ajustar solo para el input de correo */
+.form-row.correo input[type="email"] {
+    width: 100%;
+    max-width: 260px; /* Evita que el input se desborde */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f2cbe3;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Estilo del label */
+label {
+    font-weight: bold;
+    color: #e889b6;
+    margin-bottom: 5px;
     text-align: center;
 }
 
-/* Ajustar ancho de inputs específicos */
-.modal-content input[name="mascota"] {
-    max-width: 150px;
+/* Estilo específico para el input de teléfono */
+.modal-content input[type="tel"] {
+    max-width: 160px; 
+    text-align: center;
 }
+
+/* Ajustar el ancho del input y el menú de resultados */
+.form-row.four-columns input {
+    width: 100%;
+    position: relative;
+}
+
+/* Contenedor del campo de autocompletado para asegurar que la lista se posicione correctamente */
+.autocomplete {
+    position: relative;
+    width: 100%; /* Asegura que el contenedor tenga el mismo ancho que el input */
+    max-width: 350px; /* Ajusta el ancho máximo del contenedor al de los inputs */
+    font-size: 14px;
+}
+
+/* Estilos de la lista desplegable de autocompletar */
+.autocomplete-results {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%; /* Ajusta la lista para que tenga el mismo ancho que el input */
+    top: 100%; /* Coloca la lista justo debajo del input */
+    font-size: 14px;
+}
+
+
+/* Elementos individuales dentro del menú de autocompletar */
+.autocomplete-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-results li:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* Centrar texto en los inputs de fecha y hora */
+.modal-content input[type="date"],
+.modal-content input[type="time"] {
+    width: 200px; /* Define un ancho fijo de 200px (puedes ajustar el valor) */
+    text-align: center;
+}
+
 
 .modal-content input[name="motivo"] {
     max-width: 300px;
 }
 
-/* Espacio extra entre label y input */
-.modal-content label {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-}
+
+
 
 /* Estilo para el encabezado en el modal */
 .full-width {
@@ -288,4 +350,127 @@ legend {
     color: #333;
     margin-right: 10px;
     width: 100px;
+}
+
+/* Asegura que los campos "Mascota" y "Motivo" estén en la misma fila y centrados */
+.form-row.two-columns {
+    display: flex; /* Utiliza flexbox para alinear los elementos en fila */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    gap: 20px; /* Espacio entre los elementos */
+}
+
+/* Contenedor del campo de autocompletado para asegurar que la lista se posicione correctamente */
+.autocomplete {
+    position: relative;
+    width: 100%; /* Asegura que el contenedor tenga el mismo ancho que el input */
+    max-width: 350px; /* Ajusta el ancho máximo del contenedor al de los inputs */
+    font-size: 14px;
+}
+
+/* Estilos de la lista desplegable de autocompletar */
+.autocomplete-results {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%; /* Ajusta la lista para que tenga el mismo ancho que el input */
+    top: 100%; /* Coloca la lista justo debajo del input */
+    font-size: 14px;
+}
+
+/* Elementos individuales dentro del menú de autocompletar */
+.autocomplete-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-results li:hover {
+    background-color: #f1f1f1;
+}
+
+/* Estilos específicos para el autocompletado de mascotas */
+.autocomplete-mascota {
+    position: relative;
+    width: 100%;
+    max-width: 200px; /* El mismo ancho que otros inputs */
+    font-size: 14px;
+}
+
+/* Estilos para los resultados de autocompletado de mascotas */
+.autocomplete-mascota .autocomplete-results {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%;
+    top: 100%;
+    font-size: 14px;
+}
+
+.autocomplete-mascota .autocomplete-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-mascota .autocomplete-results li:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* Estilos específicos para el autocompletado de veterinarios */
+.autocomplete-veterinario {
+    position: relative;
+    width: 100%;
+    max-width: 300px; /* El mismo ancho que otros inputs */
+    font-size: 14px;
+}
+
+/* Estilos para los resultados de autocompletado de veterinarios */
+.autocomplete-veterinario .autocomplete-results {
+    position: absolute;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 999;
+    width: 100%;
+    top: 100%;
+    font-size: 14px;
+}
+
+.autocomplete-veterinario .autocomplete-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-veterinario .autocomplete-results li:hover {
+    background-color: #f1f1f1;
+}
+
+.message-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+.message-modal-content {
+    text-align: center;
+    font-size: 16px;
 }

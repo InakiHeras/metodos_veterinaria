@@ -17,16 +17,25 @@ class Mascota extends Model
     protected $fillable = [
         'id_usuario',
         'id_usuario',
+        'id_usuario',
+        'id_usuario',
         'nombre',
         'especie',
         'raza',
         'fecha_nacimiento',
         //'sexo',
+        //'sexo',
         'peso',
+        'alergia',
         'alergia',
         'castrado',
     ];
 
+    // Relación con Usuario (Muchos a Uno)
+    //public function usuario(): BelongsTo
+    //{
+    //    return $this->belongsTo(Usuario::class, 'id_cliente');
+    //}
     // Relación con Usuario (Muchos a Uno)
     //public function usuario(): BelongsTo
     //{

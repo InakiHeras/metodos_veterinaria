@@ -72,6 +72,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/historial', [HistorialController::class, 'index'])->name('historial');
+
+    Route::get('/historial_form', [HistorialController::class, 'getForm'])->name('historial.form');
 });
 
 Route::middleware('auth')->group(function () {

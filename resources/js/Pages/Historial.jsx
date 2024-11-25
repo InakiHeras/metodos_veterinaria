@@ -3,7 +3,7 @@ import jsPDF from "jspdf";
 import Base from "./Base";
 import "../../css/inicio.css"; // Importar estilos generales
 
-export default function Historial({ historial }) {
+export default function Historial({ historial, userRole }) {
     const [searchTerm, setSearchTerm] = useState(""); // Estado para búsqueda
     // Filtrar el historial según el término de búsqueda
     const filteredHistorial = historial.filter((item) => {

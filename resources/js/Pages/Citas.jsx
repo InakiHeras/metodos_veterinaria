@@ -107,7 +107,7 @@ export default function Citas() {
                     <button className="agendar-cita-btn" onClick={openModal}>Agendar cita</button>
                 </main>
 
-                <button className="action-btn agendar-cita-btn" onClick={() => openModal()}>Agendar cita</button>
+                {/*<button className="action-btn agendar-cita-btn" onClick={() => openModal()}>Agendar cita</button>*/}
 
                 {/* Mostrar el modal solo cuando se haya seleccionado una cita */}
                 {isModalOpen && (

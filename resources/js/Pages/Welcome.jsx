@@ -67,7 +67,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 </div>
 
                                 {/* Sección Izquierda - Texto */}
-                                <div className="w-1/2 flex flex-col justify-center px-10 text-gray-800">
+                                <div className="w-1/2 flex flex-col justify-center px-10 text-pink-800">
                                     <h1 className="text-pink-600 font-bold text-xl">NOS IMPORTA TU MASCOTA</h1>
                                     <h2 className="text-4xl font-semibold my-4">
                                         Atención especializada y de emergencia para mascotas

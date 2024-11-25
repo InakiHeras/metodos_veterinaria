@@ -35,7 +35,9 @@ const RecetaInput = ({ receta, index, onChange, onRemove }) => (
     </div>
 );
 
-export default function HistorialForm({ historial, setHistorial }) {
+export default function HistorialForm({ historial, setHistorial, citas, userRole }) {
+    console.log("Citas disponibles:", citas);
+
     const initialFormData = {
         id: "",
         fecha: "",
@@ -55,6 +57,19 @@ export default function HistorialForm({ historial, setHistorial }) {
             ...formData,
             [name]: value,
         });
+    };
+
+    const handleSelectIdCita = (idCita) => {
+        const citaSeleccionada = citas.find((cita) => cita.id_cita === parseInt(idCita, 10));
+        if (citaSeleccionada) {
+            setFormData({
+                ...formData,
+                id: citaSeleccionada.id_cita,
+                fecha: citaSeleccionada.fecha,
+                medico: `${citaSeleccionada.veterinario?.nombre || "No especificado"} ${citaSeleccionada.veterinario?.apellidos || ""}`.trim(),
+                mascota: citaSeleccionada.mascota?.nombre || "No especificado",
+            });
+        }
     };
 
     const handleRecetaChange = (index, field, value) => {
@@ -82,8 +97,8 @@ export default function HistorialForm({ historial, setHistorial }) {
     };
 
     const isFormValid = () => {
-        const { id, fecha, medico, cliente, mascota, recetas } = formData;
-        if (!id || !fecha || !medico || !cliente || !mascota) return false;
+        const { id, fecha, medico, cliente, mascota, diagnostico, recetas } = formData;
+        if (!id || !fecha || !medico || !cliente || !mascota || !diagnostico) return false;
         return recetas.every(
             (receta) =>
                 receta.nombre_medicamento.trim() &&
@@ -120,7 +135,7 @@ export default function HistorialForm({ historial, setHistorial }) {
                         width: "90vw",
                         maxWidth: "1200px",
                         minHeight: "85vh",
-                        backgroundImage: "url('/assets/formulario.png')",
+                        backgroundImage: "url('/assets/formulario.jpg')",
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                         position: "relative",
@@ -143,17 +158,22 @@ export default function HistorialForm({ historial, setHistorial }) {
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div className="flex flex-col">
                                 <label htmlFor="id" className="font-semibold mb-1 text-gray-700">
-                                    ID
+                                    ID Cita
                                 </label>
-                                <input
+                                <select
                                     id="id"
-                                    type="text"
                                     name="id"
                                     value={formData.id}
-                                    onChange={handleChange}
-                                    placeholder="ID único"
+                                    onChange={(e) => handleSelectIdCita(e.target.value)}
                                     className="border rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-pink-300"
-                                />
+                                >
+                                    <option value="">Seleccionar un ID</option>
+                                    {citas.map((cita) => (
+                                        <option key={cita.id_cita} value={cita.id_cita}>
+                                            {`ID: ${cita.id_cita} - ${cita.fecha} (${cita.motivo})`}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="flex flex-col items-end">
                                 <label htmlFor="fecha" className="font-semibold mb-1 text-gray-700">
@@ -166,6 +186,7 @@ export default function HistorialForm({ historial, setHistorial }) {
                                     value={formData.fecha}
                                     onChange={handleChange}
                                     className="border rounded px-2 py-1 w-2/3 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                                    readOnly
                                 />
                             </div>
                         </div>
@@ -183,6 +204,7 @@ export default function HistorialForm({ historial, setHistorial }) {
                                 onChange={handleChange}
                                 placeholder="Nombre del médico"
                                 className="border rounded px-2 py-1 w-2/3 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                                readOnly
                             />
                         </div>
 
@@ -200,6 +222,7 @@ export default function HistorialForm({ historial, setHistorial }) {
                                     onChange={handleChange}
                                     placeholder="Nombre de la mascota"
                                     className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 w-full mb-4"
+                                    readOnly
                                 />
                                 <label htmlFor="diagnostico" className="font-semibold mb-1 text-gray-700">
                                     Diagnóstico

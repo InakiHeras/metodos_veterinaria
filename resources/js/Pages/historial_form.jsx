@@ -132,7 +132,7 @@ export default function HistorialForm({ historial, setHistorial, citas, userRole
             <div
                 className="flex items-center justify-center min-h-screen"
                 style={{
-                    backgroundColor: "#f3f4f6",
+                    
                     padding: "20px",
                 }}
             >

@@ -12,27 +12,74 @@ export default function Historial({ historial, userRole }) {
     });
 
     // Función para generar y descargar un PDF con los datos de la fila
-    const generatePDF = (item) => {
-        const doc = new jsPDF();
-
-        // Configurar contenido del PDF
-        doc.setFontSize(12);
-        doc.text("Historial de Cita", 10, 10);
-        doc.text(`Fecha: ${item.fecha}`, 10, 20);
-        doc.text(`Médico: ${item.veterinario}`, 10, 30);
-        doc.text(`Cliente: ${item.cliente}`, 10, 40);
-        doc.text(`Mascota: ${item.mascota}`, 10, 50);
-        doc.text(`Razón: ${item.razon}`, 10, 60);
-        doc.text(`Diagnóstico: ${item.diagnostico}`, 10, 70);
-
-        doc.text("Recetas:", 10, 80);
-        item.recetas.forEach((receta, index) => {
-            doc.text(`- ${receta.nombre_medicamento}`, 10, 90 + index * 10);
-        });
-
-        // Descargar el archivo PDF
-        doc.save(`Historial_${item.cliente}_${item.fecha}.pdf`);
+    const generatePDF = async (item) => {
+        const doc = new jsPDF("landscape"); // Orientación horizontal
+    
+        // Función para cargar imágenes como base64
+        const loadImageAsBase64 = (url) =>
+            new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = "Anonymous"; // Permite cargar imágenes desde el servidor
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas.toDataURL("image/png")); // Puedes usar "image/jpeg" para JPG
+                };
+                img.onerror = () => reject(new Error(`No se pudo cargar la imagen: ${url}`));
+                img.src = url;
+            });
+    
+        try {
+            // Rutas a las imágenes
+            const background = await loadImageAsBase64("/assets/formulario.jpg");
+            const logo = await loadImageAsBase64("/assets/logo.png");
+            const gato = await loadImageAsBase64("/assets/gato.png");
+    
+            // Agregar fondo
+            doc.addImage(background, "JPEG", 0, 0, 297, 210); // Tamaño A4 horizontal (297x210 mm)
+    
+            // Agregar logo
+            doc.addImage(logo, "PNG", 240, 10, 40, 20); // Ajusta posición y tamaño del logo
+    
+            // Agregar imagen del gato en el lado derecho
+            doc.addImage(gato, "PNG", 200, 50, 100, 100); // Ajusta posición y tamaño del gato
+    
+            // Configurar contenido del PDF
+            doc.setFontSize(16); // Letras más grandes
+            doc.setTextColor(0, 0, 0); // Color negro para el texto
+    
+            // Título
+            doc.text("Historial de Cita", 10, 30);
+    
+            // Datos principales
+            doc.text(`Fecha: ${item.fecha}`, 10, 50);
+            doc.text(`Médico: ${item.veterinario}`, 10, 60);
+            doc.text(`Cliente: ${item.cliente}`, 10, 70);
+            doc.text(`Mascota: ${item.mascota}`, 10, 80);
+            doc.text(`Razón: ${item.razon}`, 10, 90);
+            doc.text(`Diagnóstico: ${item.diagnostico}`, 10, 100);
+    
+            // Sección de recetas
+            doc.setFontSize(14); // Reducir ligeramente para listas
+            doc.text("Recetas:", 10, 110);
+            item.recetas.forEach((receta, index) => {
+                doc.text(`- ${receta.nombre_medicamento}`, 10, 120 + index * 10);
+            });
+    
+            // Descargar el archivo PDF
+            doc.save(`Historial_${item.cliente}_${item.fecha}.pdf`);
+        } catch (error) {
+            console.error("Error generando el PDF:", error);
+            alert("Ocurrió un error al generar el PDF. Revisa las imágenes.");
+        }
     };
+    
+    
+    
+    
 
     return (
         <Base>
@@ -110,14 +157,7 @@ export default function Historial({ historial, userRole }) {
                     </div>
 
                     {/* Botón "Agregar" */}
-                    <div className="flex justify-center mt-6">
-                        <a
-                            href="/historial_form"
-                            className="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-all"
-                        >
-                            Agregar
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
         </Base>

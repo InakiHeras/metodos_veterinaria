@@ -20,7 +20,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <img
                     id="background"
                     className="absolute inset-0 w-full h-full object-cover overflow-hidden" // Aseguramos que cubra toda el área sin dejar espacio
-                    src="/assets/nube.png" // Ajusta esta ruta si mueves la imagen a `public`
+                    src="/assets/fondo_home.png" // Ajusta esta ruta si mueves la imagen a `public`
                     alt="Background Image"
                 />
 

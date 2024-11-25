@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/citas', [CitasController::class, 'store']);
     Route::post('/citas/reagendar', [CitasController::class, 'reagendar']);
     // En tu archivo web.php de Laravel
-Route::delete('/citas/{id}', [CitasController::class, 'destroy'])->name('citas.destroy');
+    Route::delete('/citas/{id}', [CitasController::class, 'destroy'])->name('citas.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

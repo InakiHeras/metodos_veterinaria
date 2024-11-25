@@ -112,7 +112,7 @@ class CitasController extends Controller
             'fecha' => 'required|date',
             'hora' => 'required|date_format:H:i',
         ]);
-    
+        
         // Buscar la cita por id
         $cita = Cita::find($request->id_cita);
     
@@ -124,16 +124,11 @@ class CitasController extends Controller
             ]);
     
             // Retornar la vista con el mensaje de éxito y las citas actualizadas
-            return Inertia::render('Citas/Index', [
-                'message' => 'Cita actualizada correctamente', // Mensaje de éxito
-                'citas' => Cita::all(), // Recalcular y pasar las citas actualizadas
-            ]);
+            return redirect()->route('citas.index')->with('success', 'Cita actualizada correctamente.');
         }
     
         // Si la cita no se encuentra, devolver el error
-        return Inertia::render('Citas/Index', [
-            'error' => 'Cita no encontrada',
-        ]);
+        return redirect()->back()->with('error', 'Cita no encontrada.');
     }
 
     public function destroy($id)
@@ -143,9 +138,6 @@ class CitasController extends Controller
         $cita->delete();
     
         // Redirigir a la vista de citas con un mensaje de éxito
-        return Inertia::render('Citas/Index', [
-            'message' => 'Cita eliminada con éxito', // El mensaje de éxito
-            'citas' => Cita::all(), // Recalcular y pasar las citas restantes
-        ]);
+        return redirect()->route('citas.index')->with('success', 'Cita eliminada exitosamente.');
     }
 }

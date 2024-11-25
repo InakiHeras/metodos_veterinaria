@@ -70,6 +70,7 @@ Route::delete('/citas/{id}', [CitasController::class, 'destroy'])->name('citas.d
 
     Route::get('/inicio_add_mascota', [UserController::class, 'index'])->name('inicio_add_mascota');
 
+
     Route::get('/historial', [HistorialController::class, 'index'])->name('historial');
 });
 

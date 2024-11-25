@@ -28,9 +28,9 @@ export default function Base({ children }) {
                             </a>
                         </li>
                         <li>
-                            <a href="/historial" className={`nav-link ${currentPath === '/historial' ? 'active' : ''}`}>
+                            <a href="/historial" className={`nav-link ${["/historial", '/historial_form'].includes(currentPath) ? 'active' : ''}`}>
                                 Historial
-                            </a>
+                            </a> 
                         </li>
                         <li>
                             <a href="/inicio_add_mascota" className={`nav-link ${['/inicio_add_mascota', '/add_mascota'].includes(currentPath) ? 'active' : ''}`}>

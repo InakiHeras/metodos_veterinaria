@@ -68,7 +68,7 @@ export default function Citas() {
     return (
         <Base>
             <div className="citas-page">
-                <main className="table-container">
+                <main className="citas-table-container">
                     <table className="citas-table">
                         <thead>
                             <tr>
@@ -104,10 +104,9 @@ export default function Citas() {
                             ))}
                         </tbody>
                     </table>
-                    <button className="agendar-cita-btn" onClick={openModal}>Agendar cita</button>
                 </main>
 
-                {/*<button className="action-btn agendar-cita-btn" onClick={() => openModal()}>Agendar cita</button>*/}
+                <button className="action-btn agendar-cita-btn" onClick={() => openModal()}>Agendar cita</button>
 
                 {/* Mostrar el modal solo cuando se haya seleccionado una cita */}
                 {isModalOpen && (

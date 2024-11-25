@@ -1,0 +1,52 @@
+/* Color de fondo para toda la página */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evita el desplazamiento horizontal */
+    overflow-y: auto; /* Permite el desplazamiento solo si es necesario en vertical */
+    width: 100%;
+    height: 100%;
+    background-color: #fef7ff;
+    font-family: "Lexend Deca", sans-serif;
+    background-image: url('/assets/fondo_inicio.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Asegúrate de que el contenedor principal no tenga scroll */
+.flex.items-center.justify-center.min-h-screen {
+    overflow: hidden;
+    height: 100%; /* Permite que ocupe toda la altura sin desbordar */
+}
+
+/* Establecer overflow dentro del contenedor del formulario para evitar scroll duplicado */
+.rounded-lg.shadow-lg {
+    overflow-y: auto; /* Solo el contenedor del formulario debe permitir el desplazamiento */
+}
+
+/* Eliminar el translateX si no es necesario */
+.rounded-lg.shadow-lg {
+    transform: none;  /* Eliminar la transformación translateX(10%) si no es esencial */
+}
+
+/* Ajustar el contenedor principal para que no cause desplazamiento inesperado */
+.flex.items-center.justify-center.min-h-screen {
+    height: 100%; /* Permitir que ocupe toda la altura sin desbordar */
+}
+
+/* Desactivar el redimensionamiento del textarea */
+textarea {
+    resize: none; /* Desactiva el redimensionamiento */
+    height: auto;  /* Ajusta la altura automáticamente */
+    max-height: 150px; /* Limita la altura máxima */
+}
+
+/* Asegura que los márgenes y rellenos no afecten el tamaño */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;  /* Esto evita problemas con márgenes o rellenos extra */
+}
+
+

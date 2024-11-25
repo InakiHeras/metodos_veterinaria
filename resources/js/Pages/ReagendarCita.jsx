@@ -58,14 +58,10 @@ export default function ReagendarCita({ citaSeleccionada, duenos, veterinarios, 
         const updatedCita = { ...citaSeleccionada, fecha: citaData.fecha, hora: citaData.hora };
     
         // Enviar los datos al backend
-        Inertia.post('/citas/reagendar', updatedCita, {
-            onSuccess: () => {
-                if (onClose) onClose();
-            },
-            onError: (errors) => {
-                console.error('Errores en la actualización:', errors);
-            }
-        });
+        Inertia.post('/citas/reagendar', updatedCita);
+    
+        // Cerrar el modal
+        onClose();
     };
     
 

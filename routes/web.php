@@ -21,7 +21,6 @@ Route::get('/citas', function () {
 });
 
 
-
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -40,9 +39,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/inicio', [InicioController::class, 'index'])->name('inicio');
     Route::get('/citas', [CitasController::class, 'index']);
 
-    // usar el controlador 'store'
     Route::post('/citas', [CitasController::class, 'store']);
-    
+    Route::post('/citas/reagendar', [CitasController::class, 'reagendar']);
+    // En tu archivo web.php de Laravel
+Route::delete('/citas/{id}', [CitasController::class, 'destroy'])->name('citas.destroy');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -36,8 +36,14 @@ const RecetaInput = ({ receta, index, onChange, onRemove }) => (
 );
 
 export default function HistorialForm({ historial, setHistorial, citas, userRole }) {
+<<<<<<< HEAD
     console.log("Citas disponibles:", citas);
 
+=======
+    console.log(citas);
+    console.log(userRole);
+    
+>>>>>>> 049b172d499e60adf9a3d35a2789114f4b059b3a
     const initialFormData = {
         id: "",
         fecha: "",

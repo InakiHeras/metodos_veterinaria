@@ -104,4 +104,8 @@ class HistorialController extends Controller
             'userRole' => $userRole,
         ]);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 049b172d499e60adf9a3d35a2789114f4b059b3a

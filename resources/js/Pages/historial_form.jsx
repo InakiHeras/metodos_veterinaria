@@ -35,7 +35,10 @@ const RecetaInput = ({ receta, index, onChange, onRemove }) => (
     </div>
 );
 
-export default function HistorialForm({ historial, setHistorial }) {
+export default function HistorialForm({ historial, setHistorial, citas, userRole }) {
+    console.log(citas);
+    console.log(userRole);
+    
     const initialFormData = {
         id: "",
         fecha: "",

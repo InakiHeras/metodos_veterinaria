@@ -74,4 +74,34 @@ class HistorialController extends Controller
             'userRole' => $userRole,
         ]);
     }
+
+    public function getForm()
+    {
+        // Obtener el usuario autenticado y su rol
+        $user = Usuario::find(Auth::id());
+        $userRole = $user->getRoleNames()->first();
+
+        // Inicializar la variable de citas
+        $citas = collect();
+
+        if ($userRole === 'veterinario') {
+            // Obtener citas relacionadas con el veterinario autenticado
+            $citas = Cita::with(['mascota', 'diagnostico', 'veterinario'])
+                ->where('id_veterinario', $user->id_usuario)
+                ->get();
+        } elseif ($userRole === 'dueño') {
+            // Obtener citas relacionadas con las mascotas del dueño autenticado
+            $citas = Cita::with(['mascota', 'diagnostico', 'veterinario'])
+                ->whereHas('mascota', function ($query) use ($user) {
+                    $query->where('id_usuario', $user->id_usuario);
+                })
+                ->get();
+        }
+
+        // Renderizar la vista HistorialForm y enviar las citas
+        return Inertia::render('historial_form', [
+            'citas' => $citas,
+            'userRole' => $userRole,
+        ]);
+    }
 }

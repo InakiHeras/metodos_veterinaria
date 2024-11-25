@@ -35,14 +35,7 @@ const RecetaInput = ({ receta, index, onChange, onRemove }) => (
     </div>
 );
 
-export default function HistorialForm({ historial, setHistorial, citas, userRole }) {
-
-    console.log("Citas disponibles:", citas);
-
-
-    console.log(citas);
-    console.log(userRole);
-    
+export default function HistorialForm({ historial = [], setHistorial = () => {}, citas, userRole }) {
 
     const initialFormData = {
         id: "",
@@ -73,7 +66,9 @@ export default function HistorialForm({ historial, setHistorial, citas, userRole
                 id: citaSeleccionada.id_cita,
                 fecha: citaSeleccionada.fecha,
                 medico: `${citaSeleccionada.veterinario?.nombre || "No especificado"} ${citaSeleccionada.veterinario?.apellidos || ""}`.trim(),
+                cliente: citaSeleccionada.cliente?.nombre || "No especificado",
                 mascota: citaSeleccionada.mascota?.nombre || "No especificado",
+                razon: citaSeleccionada.motivo || "",
             });
         }
     };
@@ -93,7 +88,6 @@ export default function HistorialForm({ historial, setHistorial, citas, userRole
             recetas: [...formData.recetas, { nombre_medicamento: "", dosis: "", tiempo: "" }],
         });
     };
-    
 
     const removeReceta = (index) => {
         const newRecetas = formData.recetas.filter((_, i) => i !== index);
@@ -132,7 +126,6 @@ export default function HistorialForm({ historial, setHistorial, citas, userRole
             <div
                 className="flex items-center justify-center min-h-screen"
                 style={{
-                    
                     padding: "20px",
                 }}
             >

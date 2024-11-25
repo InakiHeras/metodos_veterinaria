@@ -157,6 +157,14 @@ export default function Historial({ historial, userRole }) {
                     </div>
 
                     {/* Botón "Agregar" */}
+                    <div className="flex justify-center mt-6">
+                        <a
+                            href="/historial_form"
+                            className="bg-pink-500 text-white px-6 py-2 rounded-full hover:bg-pink-600 transition-all"
+                        >
+                            Agregar
+                        </a>
+                    </div>
                     
                 </div>
             </div>

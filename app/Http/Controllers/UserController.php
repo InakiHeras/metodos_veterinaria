@@ -19,10 +19,13 @@ class UserController extends Controller
         //$userName = $user-›nombre; // Obtener el nombre del usuario
         //$userRole = $user->getRoleNames()->first();
 
-        $usuario_mascota = Usuario::select('usuarios.id_usuario', 'mascota.nombre as mascota', 'usuarios.nombre', 'usuarios.email', 'usuarios.telefono', 'usuarios.tipo_usuario')
+        $usuario_mascota = Usuario::select('usuarios.id_usuario', 'mascota.nombre as mascota', 'usuarios.nombre', 'usuarios.email', 'usuarios.telefono')
         ->join('mascota', 'usuarios.id_usuario','=','mascota.id_usuario')->where('usuarios.id_usuario', $user->id_usuario)->get();
 
-        return Inertia::render('inicio_add_mascota', ['usuario_mascota' => $usuario_mascota]);
+        $usuario_tipo = Usuario::select('tipo_usuario')->where('id_usuario', $user->id_usuario)->get();
+
+        return Inertia::render('inicio_add_mascota', ['usuario_mascota' => $usuario_mascota, 'usuario_tipo' => $usuario_tipo]);
+        //return Inertia::render('inicio_add_mascota', []);
 
     }
 

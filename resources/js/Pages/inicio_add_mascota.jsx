@@ -5,11 +5,11 @@ import { usePage } from '@inertiajs/react';
 
 export default function ListaMascotas() {
 
+    const { usuario_tipo } = usePage().props;
+    console.log(usuario_tipo);
+
     const { usuario_mascota } = usePage().props;
     console.log(usuario_mascota);
-
-    const tipo_usuario = usuario_mascota.tipo_usuario;
-
 
     return (
         <Base>
@@ -27,7 +27,9 @@ export default function ListaMascotas() {
                             </tr>
                         </thead>
                         <tbody>
-                            {usuario_mascota.map((usuario, index) => (
+                            {
+                            usuario_tipo[0].tipo_usuario === "dueño" ? (   //Quitar cuando veterinario tenga mascotas
+                            usuario_mascota.map((usuario, index) => (
                                 <tr
                                     key={usuario.id_usuario}
                                     className={`${
@@ -39,16 +41,28 @@ export default function ListaMascotas() {
                                     <td className="px-4 py-2">{usuario.email}</td>
                                     <td className="px-4 py-2">{usuario.telefono}</td>
                                 </tr>
-                            ))}
+                            ))
+                        /******* Quitar cuando veterinario tenga mascotas *******/
+                            ):(
+                            <tr
+                                className = "bg-white text-gray-700"
+                                >
+                                    <td className="px-4 py-2"></td>
+                                    <td className="px-4 py-2"></td>
+                                    <td className="px-4 py-2"></td>
+                                    <td className="px-4 py-2"></td>
+                            </tr>
+                        )    /*** Quitar cuando veterinario tenga mascotas ****/
+                        }
                         </tbody>
                     </table>
 
                     {/* Botón de agregar */}
-                    {tipo_usuario === "dueño" ? (
+                    {usuario_tipo[0].tipo_usuario === "dueño" ? (
                         <div className="flex justify-center mt-8">
-                            {/* Botón de agregar */}
+                        {/* Botón de agregar */}
                             <button
-                                onClick={() => window.location.assign('/add_mascota')}
+                                onClick={() => window.location.assign('/FormDueño')}
                                 className="bg-pink-500 text-white px-6 py-3 rounded-full shadow-md hover:bg-pink-600 transition"
                             >
                                 Agregar Mascota
@@ -59,7 +73,7 @@ export default function ListaMascotas() {
                         <div className="flex justify-center mt-8">
                             {/* Botón de agregar */}
                             <button
-                                onClick={() => window.location.assign('/FormDueño')}
+                                onClick={() => window.location.assign('/add_mascota')}
                                 className="bg-pink-500 text-white px-6 py-3 rounded-full shadow-md hover:bg-pink-600 transition"
                             >
                                 Agregar Mascota
